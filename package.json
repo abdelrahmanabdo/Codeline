@@ -1,5 +1,5 @@
 {
-  "name": "Codeline",
+  "name": "codeline",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,15 +7,26 @@
     "start": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "cros": "^1.0.1",
+    "crypto": "^1.0.1",
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "8.5.1",
+    "md5": "2.2.1",
+    "moment": "2.24.0",
     "mongoose": "^5.12.2",
     "nodemon": "^2.0.7",
     "socket.io": "^4.0.0"
-  }
+  },
+  "keywords": [
+    "codeline",
+    "social",
+    "chat",
+    "video"
+  ],
+  "author": "Abdelrahman Salman",
+  "license": "Codeline team"
 }
