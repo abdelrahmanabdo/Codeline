@@ -1,43 +1,98 @@
+const userService = require('../services/User.service');
+
 module.exports = {
+  /**
+   * Get all users.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  getUsers: (req, res) => {
+    userService.fetchUsersList()
+      .then((result) => {
+        res.send({
+          success: true,
+          data: result
+        })
+      })
+      .catch((err) => {
+        throw err;
+      });
+  },
 
   /**
-   * Returns user data from our database.
+   * Get single user.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  getUser: (req, res) => {
+    userService.fetchCurrentUser()
+      .then((result) => {
+        res.send({
+          success: true,
+          data: result
+        })
+      })
+      .catch((err) => {
+        throw err;
+      });
+  },
+
+  /**
+   * Get specific user with id.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  getSpecificUser: (req, res) => {
+    const {id} = req.params;
+    if (!id) return res.send({
+      success: false,
+      message: 'Missing user id'
+    });
+
+    userService.fetchSpecificUser(req.params.id)
+      .then((result) => {
+        res.send({
+          success: true,
+          data: result
+        })
+      })
+      .catch((err) => {
+        throw err;
+      });
+  },
+
+  /**
+   * Post new user data.
    * 
    * @param {Object?} data 
    * @returns {Object}
    * @public
    */
-
-  async get(data) {},
+  insertUser: (req, res, next) => {
+    console.log('post', req)
+  },
 
   /**
-   * Post user data from our database.
+   * Update user data.
    * 
    * @param {Object?} data 
    * @returns {Object}
    * @public
    */
+  updateUser: (req, res, next) => {
 
-  async post(data) {},
+  },
 
   /**
-   * Post user data from our database.
+   * Remove user.
    * 
-   * @param {Object?} data 
    * @returns {Object}
    * @public
    */
+  removeUser: (req, res, next) => {
 
-  async put(data) {},
-
-  /**
-   * Post user data from our database.
-   * 
-   * @param {Object?} data 
-   * @returns {Object}
-   * @public
-   */
-
-  async delete() {},
-
+  },
 }

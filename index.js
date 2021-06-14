@@ -1,15 +1,23 @@
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var mongoose = require('mongoose');
+const express = require('express');
+const app = express();
+const http = require('http').Server(app);
+const cors = require('cors');
+const dotenv = require('dotenv');
+const io = require('socket.io')(http);
 
-app.use(express.static(__dirname));
+const userRoutes = require('./src/api/routes/user.routes');
+
+dotenv.config();
 app.use(express.json());
+app.use(cors());
+app.use(express.static(__dirname));
 app.use(express.urlencoded({extended: false}));
 app.use('/public', express.static('resources'));
 
+// Routes
+app.use('/api/v1/users', userRoutes);
+
 const port = process.env.PORT || 3000;
-var server = http.listen(port, () => {
-  console.log('Codeline server is running on port', server.address().port);
+http.listen(port, () => {
+  console.log('Codeline server is running on port', port);
 });
