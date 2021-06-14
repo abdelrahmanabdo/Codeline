@@ -5,7 +5,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const io = require('socket.io')(http);
 
-const userRoutes = require('./src/api/routes/user.routes');
+const userRoutes = require('./src/routes/user.routes');
 
 dotenv.config();
 app.use(express.json());
