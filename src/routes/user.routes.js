@@ -12,7 +12,7 @@ router.get('', getUsers); // get users list
 router.get('/me', getUser); // get single user
 router.get('/:id', getSpecificUser); // get specific user id
 router.post('', insertUser); // add new user
-router.put('', updateUser); // update user data
-router.delete('', removeUser); // delete user
+router.put('/:id', updateUser); // update user data
+router.delete('/:id', removeUser); // delete user
 
 module.exports = router;  

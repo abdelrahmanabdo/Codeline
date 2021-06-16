@@ -5,6 +5,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const io = require('socket.io')(http);
 
+const authRoutes = require('./src/routes/auth.routes');
 const userRoutes = require('./src/routes/user.routes');
 
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(express.urlencoded({extended: false}));
 app.use('/public', express.static('resources'));
 
 // Routes
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 
 const port = process.env.PORT || 3000;
