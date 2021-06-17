@@ -1,4 +1,5 @@
 const otpService = require('../services/otp.service');
+const { validationResult } = require('express-validator');
 
 module.exports = {
 
@@ -42,10 +43,26 @@ module.exports = {
    * @param {Number} user_id
    * @returns {String} otp_code
    */
-  verifyOTP: async (user_id, otp_code) => {
-    // here
+  verifyOTP: async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
 
-    return '';
+    const {user_id, otp} = req.body;
+    otpService.verify(user_id, otp)
+      .then((result) => {
+        res.send({
+          success: result,
+          message: result ? 'OTP is valid' : 'OTP is not valid',
+        });
+      })
+      .catch((err) => {
+        throw err;
+      });
   },
 
 }

@@ -1,4 +1,6 @@
-const userService = require('../services/user.service');
+const { body } = require('express-validator');
+const profileService = require('../services/profile.service');
+const { validationResult } = require('express-validator');
 
 module.exports = {
   /**
@@ -7,7 +9,7 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  getUsers: (req, res) => {
+  getUserProfile: (req, res) => {
     userService.fetchUsersList()
       .then((result) => {
         res.send({
@@ -16,18 +18,21 @@ module.exports = {
         })
       })
       .catch((err) => {
-        throw err;
+        return res.status(500).send({
+          success: false,
+          message: err.sqlMessage
+        });
       });
   },
 
   /**
-   * Get single user.
+   * Get profile information.
    * 
    * @returns {Object}
    * @public
    */
-  getUser: (req, res) => {
-    userService.fetchCurrentUser()
+  getProfileInformation: (req, res) => {
+    profileService.fetchProfileInformation(req.params.id)
       .then((result) => {
         res.send({
           success: true,
@@ -35,55 +40,218 @@ module.exports = {
         })
       })
       .catch((err) => {
-        throw err;
+        return res.status(500).send({
+          success: false,
+          message: err.sqlMessage
+        });
       });
   },
 
-  /**
-   * Get specific user with id.
+
+ /**
+   * Get profile Gallery.
    * 
    * @returns {Object}
    * @public
    */
-  getSpecificUser: (req, res) => {
-    const {id} = req.params;
-    if (!id) return res.send({
-      success: false,
-      message: 'Missing user id'
+  getProfileGallery: (req, res) => {
+    profileService.fetchProfileGallery(req.params.id)
+      .then((result) => {
+        res.send({
+          success: true,
+          data: result
+        })
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          success: false,
+          message: err.sqlMessage
+        });
+      });
+  },
+
+
+ /**
+   * Get profile Occasions.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  getProfileOccasions: (req, res) => {
+    profileService.fetchProfileOccasions(req.params.id)
+      .then((result) => {
+        res.send({
+          success: true,
+          data: result
+        })
+      })
+      .catch((err) => {
+         return res.status(500).send({
+           success: false,
+           message: err.sqlMessage
+         });
+      });
+  },
+
+ /**
+   * Get profile projects.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  getProfileProjects: (req, res) => {
+    profileService.fetchProfileProjects(req.params.id)
+      .then((result) => {
+        res.send({
+          success: true,
+          data: result
+        })
+      })
+      .catch((err) => {
+         return res.status(500).send({
+           success: false,
+           message: err.sqlMessage
+         });
+      });
+  },
+
+  /**
+   * Upsert user's profile information.
+   * 
+   * @param {Object?} data 
+   * @returns {Object}
+   * @public
+   */
+  upsertProfileInformation: async (req, res, next) => {
+    if (Object.keys(req.body).length === 0 ) 
+      return res.status(400).send({success: false, message: 'No Data Sent'});
+
+    const data = JSON.parse(JSON.stringify(req.body));
+
+    // If there is avatar in the data
+    if (data.hasOwnProperty('avatar')) {
+
+    }
+    // Check if user already has a profile 
+    const hasProfile = await profileService.checkUserHasProfile(req.params.id);
+
+    // Upsert data
+    profileService.upsertProfileInformation(
+      hasProfile ? 'update' : 'insert',
+      req.params.id, 
+      data
+    )
+    .then(() => {
+      return res.status(200).send({
+        success: true,
+        message: `profile information is ${hasProfile ? 'updated' : 'inserted'} successfully!`
+      });
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        success: false,
+        message: err.sqlMessage
+      });
     });
+  },
 
-    userService.fetchSpecificUser(req.params.id)
-      .then((result) => {
-        res.send({
+  /**
+   * Insert profile gallery.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  insertProfileGallery: (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    const data = JSON.parse(JSON.stringify(req.body));
+
+    // Update data
+    profileService.insertNewGalleryRow(req.params.id, data)
+    .then(() => {
+      return res.status(200).send({
+        success: true,
+        message: `Data is inserted successfully!`
+      });
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        success: false,
+        message: err.sqlMessage
+      });
+    });
+  },
+
+  /**
+   * Insert profile Occasion.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  insertProfileOccasion: (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    const data = JSON.parse(JSON.stringify(req.body));
+
+    // Update data
+    profileService.insertNewOccasionRow(req.params.id, data)
+      .then(() => {
+        return res.status(200).send({
           success: true,
-          data: result
-        })
+          message: `Data is inserted successfully!`
+        });
       })
       .catch((err) => {
-        throw err;
+        return res.status(500).send({
+          success: false,
+          message: err.sqlMessage
+        });
       });
   },
 
   /**
-   * Post new user data.
+   * Insert profile Project.
    * 
-   * @param {Object?} data 
    * @returns {Object}
    * @public
    */
-  insertUser: (req, res, next) => {
-    console.log('post', req)
-  },
+  insertProfileProject: (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
 
-  /**
-   * Update user data.
-   * 
-   * @param {Object?} data 
-   * @returns {Object}
-   * @public
-   */
-  updateUser: (req, res, next) => {
+    const data = JSON.parse(JSON.stringify(req.body));
 
+    // Update data
+    profileService.insertNewProjectRow(req.params.id, data)
+    .then(() => {
+      return res.status(200).send({
+        success: true,
+        message: `Data is inserted successfully!`
+      });
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        success: false,
+        message: err.sqlMessage
+      });
+    });
   },
 
   /**

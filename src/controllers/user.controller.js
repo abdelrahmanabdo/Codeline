@@ -1,4 +1,5 @@
 const userService = require('../services/user.service');
+const { validationResult } = require('express-validator');
 
 module.exports = {
   /**
@@ -45,7 +46,7 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  getSpecificUser: (req, res) => {
+  get: (req, res) => {
     const {id} = req.params;
     if (!id) return res.send({
       success: false,
@@ -57,7 +58,7 @@ module.exports = {
         res.send({
           success: true,
           data: result
-        })
+        });
       })
       .catch((err) => {
         throw err;
@@ -71,7 +72,7 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  insertUser: (req, res, next) => {
+  post: (req, res, next) => {
     console.log('post', req)
   },
 
@@ -82,8 +83,27 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  updateUser: (req, res, next) => {
+  update: (req, res, next) => {
+    const data = JSON.parse(JSON.stringify(req.body));
 
+    // Upload image
+    // here 
+
+    // Update data
+    userService.updateUser(req.params.id, data)
+      .then(() => {
+        return res.status(200).send({
+          success: true,
+          message: 'Data is updated successfully!'
+        })
+        ;
+      })
+      .catch(() => {
+        return res.status(500).send({
+          success: false,
+          message: 'Something wrong happened!'
+        });
+      });
   },
 
   /**
@@ -92,7 +112,37 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  removeUser: (req, res, next) => {
+  remove: (req, res, next) => {
 
   },
+
+
+  /**
+   * Update user pin code.
+   * 
+   * @private
+   */
+  updatePinCode: (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    userService.updateUserPinCode(req.params.id, req.body.pin_code)
+      .then(() => {
+        return res.status(200).send({
+          success: true,
+          message: 'Pin Code is updated successfully!'
+        });
+      })
+      .catch(() => {
+        return res.status(500).send({
+          success: false,
+          message: 'Something wrong happened!'
+        });
+      });
+  }
 }

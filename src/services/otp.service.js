@@ -49,10 +49,10 @@ module.exports = {
   verify: (user_id, otp_code) => {
     return new Promise((resolve, reject) => {
       db.query(
-        'select * from users limit 1',
+        `select * from OTPs where user_id = ${user_id} AND otp_code = '${otp_code}'`,
         (error, results) => {
-          if (error) reject(error)
-          resolve(results.length > 0 ? results[0] : null);
+          if (error) return reject(error)
+          resolve(results.length > 0 ? true : false);
         }
       );
     });
