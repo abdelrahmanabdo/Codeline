@@ -144,5 +144,34 @@ module.exports = {
           message: 'Something wrong happened!'
         });
       });
+  },
+
+  /**
+   * Update user pin code.
+   * 
+   * @private
+   */
+  updatePassword: (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    userService.updateUserPassword(req.params.id, req.body.password)
+      .then(() => {
+        return res.status(200).send({
+          success: true,
+          message: 'Password is updated successfully!'
+        });
+      })
+      .catch(() => {
+        return res.status(500).send({
+          success: false,
+          message: 'Something wrong happened!'
+        });
+      });
   }
 }

@@ -84,7 +84,10 @@ module.exports = {
         })
       })
       .catch((err) => {
-        throw err;
+        return res.status(404).json({
+          success: false,
+          message: err
+        });
       });
   },
 
@@ -98,9 +101,7 @@ module.exports = {
  * @private
  */
 createUserToken = (userId) => {
-  return jwt.sign({
-            id: userId
-          }, config.jwtSecret, {
+  return jwt.sign({ id: userId }, config.jwtSecret, {
             expiresIn: 86400922
-          });
+         });
 }

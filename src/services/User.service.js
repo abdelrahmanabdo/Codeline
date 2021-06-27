@@ -1,4 +1,5 @@
 const db = require('../utils/db');
+var bcrypt = require('bcrypt');
 
 module.exports = {
 
@@ -88,7 +89,7 @@ module.exports = {
 
 
   /**
-   * Update user data.
+   * Update user pin_code.
    * Change name, email and avatar columns values only.
    * 
    * @returns {Object}
@@ -106,4 +107,38 @@ module.exports = {
     });
   },
 
+  /**
+   * Update user password.
+   * Change name, email and avatar columns values only.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  updateUserPassword: (id, password) => {
+    return new Promise((resolve, reject) => {
+      cryptPassword(password, (err, hashedPassword) => {
+        db.query(
+          `UPDATE users set password = '${hashedPassword}' where id = ${id}`,
+          (error, results) => {
+            if (error) reject(error);
+            resolve(results);
+          }
+        );
+      });
+    });
+  },
+
 }
+
+
+// Crypt new user password
+cryptPassword = async function (password, callback) {
+  await bcrypt.genSalt(10, function (err, salt = env.process.PASSWORD_HASH_SALT || 'codeline user password salt') {
+    if (err)
+      return callback(err);
+
+    bcrypt.hash(password, salt, function (err, hash) {
+      return callback(err, hash);
+    });
+  });
+};

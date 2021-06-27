@@ -6,6 +6,9 @@ const compression = require('compression');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
 const io = require('socket.io')(http);
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerOptions = require('./swagger');
 
 const authRoutes = require('./src/routes/auth.routes');
 const userRoutes = require('./src/routes/user.routes');
@@ -25,6 +28,11 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/otp', otpRoutes);
 app.use('/api/v1/profile', profileRoutes);
+
+// Swagger
+app.use('/api/doc', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc(swaggerOptions)));
+
+
 
 const port = process.env.PORT || 3000;
 http.listen(port, () => {

@@ -23,4 +23,17 @@ module.exports = {
     .isLength({ min: 4,max: 4})
     .withMessage('Pin Code must be 4 digits'),
   ],
+
+  /**
+   * Update user password validator
+   */
+  updatePasswordValidator: [
+    body('password')
+    .notEmpty()
+    .withMessage('Password is required')
+    .isLength({
+      min: 8
+    })
+    .withMessage('Password must be at least 8 digits'),
+  ],
 }

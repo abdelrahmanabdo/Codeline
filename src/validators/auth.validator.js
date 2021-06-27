@@ -11,23 +11,25 @@ module.exports = {
       .withMessage('Phone is required')
       .isLength({ min: 11 })
       .withMessage('Phone must be at least 11 digits'),
+    body('password')
+      .notEmpty()
+      .withMessage('Password is required')
+      .isLength({ min: 8 })
+      .withMessage('Password must be at least 8 digits'),
   ],
 
   /**
    * login validator
    */
   loginValidator: [
-    body('user_id')
+    body('phone')
       .notEmpty()
-      .withMessage('user_id is required'),
+      .withMessage('Phone is required'),
 
-    body('pin_code')
+    body('password')
       .notEmpty()
-      .withMessage('pin_code is required')
-      .isLength({
-        min: 4,
-        max: 4
-      })
-      .withMessage('Pin code must be at least 4 digits'),
+      .withMessage('password is required')
+      .isLength({  min: 8 })
+      .withMessage('Password must be at least 8 digits'),
   ]
 }

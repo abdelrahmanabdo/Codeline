@@ -21,6 +21,17 @@
     "nodemon": "^2.0.7",
     "socket.io": "^4.0.0"
   },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "dotenv": "^10.0.0",
+    "express-validator": "^6.12.0",
+    "helmet": "^4.6.0",
+    "mysql": "^2.18.1",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6"
+  },
   "keywords": [
     "codeline",
     "social",
@@ -28,13 +39,5 @@
     "video"
   ],
   "author": "Abdelrahman Salman",
-  "license": "Codeline team",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "compression": "^1.7.4",
-    "dotenv": "^10.0.0",
-    "express-validator": "^6.12.0",
-    "helmet": "^4.6.0",
-    "mysql": "^2.18.1"
-  }
+  "license": "Codeline team"
 }
