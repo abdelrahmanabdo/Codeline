@@ -29,4 +29,5 @@ router.post('/:id/projects', createProfileProjectValidator, insertProfileProject
 
 router.put('/:id/information', upsertProfileInformation); // insert user's profile information
 
+
 module.exports = router;  
