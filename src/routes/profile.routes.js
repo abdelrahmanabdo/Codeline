@@ -16,6 +16,7 @@ const {
   insertProfileProject
 } = require('../controllers/profile.controller');
 
+
 router.get('', getUserProfile); // get users list
 router.get('/:id/information', getProfileInformation); // get user's profile information
 router.get('/:id/gallery', getProfileGallery); // get user's profile gallery

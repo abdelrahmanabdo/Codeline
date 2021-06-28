@@ -10,7 +10,7 @@ const {
 
 // Create new account
 router.post('/create_account', createAccountValidator, createAccount); 
-// login user
+// log user in
 router.post('/login', loginValidator, login);
 
 module.exports = router;

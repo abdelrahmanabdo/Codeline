@@ -28,10 +28,10 @@
  *      example:
  *         nickname: Abdo
  *         birth_date: 15/7/1995 
- *         martial_status_id: 2
+ *         martial_status_id: 1
  *         location_id: 1
- *         CV: CV's file base64 string
- *         bio: Hello I'm Abdelrahman, work as software engineer
+ *         CV: CV file base64 string
+ *         bio: Hello
  */
 
 /**

@@ -15,6 +15,9 @@ const userRoutes = require('./src/routes/user.routes');
 const profileRoutes = require('./src/routes/profile.routes');
 const otpRoutes = require('./src/routes/otp.routes');
 
+// Auth middleware
+const authMiddleware = require('./src/middlewares/auth.middleware');
+
 dotenv.config();
 app.use(express.json());
 app.use(cors());
@@ -25,14 +28,12 @@ app.use('/public', express.static('resources'));
 
 // Routes
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/otp', otpRoutes);
-app.use('/api/v1/profile', profileRoutes);
+app.use('/api/v1/users', authMiddleware, userRoutes);
+app.use('/api/v1/profile', authMiddleware,profileRoutes);
 
 // Swagger
 app.use('/api/doc', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc(swaggerOptions)));
-
-
 
 const port = process.env.PORT || 3000;
 http.listen(port, () => {

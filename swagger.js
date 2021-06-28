@@ -10,8 +10,23 @@ module.exports = {
       { url: 'http://localhost:3000/api/v1/' },
       { url: 'https://app.codeline.co/api/v1/' }
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          name: "Authorization",
+          in: "header",
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        }
+      }
+    },
+    security: [{
+      bearerAuth: []
+    }],
     schemas: [
-      "https"
+      "https",
+      "http"
     ],
   },
   apis: ["./src/config/swagger/*.js"]
