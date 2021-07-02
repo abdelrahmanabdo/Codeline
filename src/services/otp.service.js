@@ -10,32 +10,14 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  createUserNewOTP: (user_id, otp_code) => {
+  createUserNewOTP: (userId, otpCode) => {
     return new Promise(async (resolve, reject) => {
       db.query(
         'INSERT INTO OTPs (user_id, otp_code) VALUES (?, ?) ',
-        [user_id, otp_code],
+        [userId, otpCode],
         (error, results) => {
           if (error) reject(error)
-          resolve(results);
-        }
-      );
-    });
-  },
-
-  /**
-   * Recreate new otp for a user.
-   * 
-   * @returns {Array}
-   * @public
-   */
-  recreateNewOTP: () => {
-    return new Promise((resolve, reject) => {
-      db.query(
-        'select * from users limit 1',
-        (error, results) => {
-          if (error) reject(error)
-          resolve(results.length > 0 ? results[0] : null);
+          resolve(otpCode);
         }
       );
     });
@@ -46,10 +28,10 @@ module.exports = {
    * 
    * @public
    */
-  verify: (user_id, otp_code) => {
+  verify: (userId, otpCode) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `select * from OTPs where user_id = ${user_id} AND otp_code = '${otp_code}'`,
+        `SELECT * FROM OTPs WHERE user_id = ${userId} AND otp_code = '${otpCode}'`,
         (error, results) => {
           if (error) return reject(error)
           resolve(results.length > 0 ? true : false);
@@ -58,24 +40,4 @@ module.exports = {
     });
   },
 
-}
-
-
-/**
- * Check if user phone is exists
- * 
- * @param {String} phone
- * @returns {Boolean}
- */
-isPhoneAlreadyExist = (phone) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-        'SELECT * FROM users WHERE phone = ?',
-        [phone],
-        (error, results) => {
-          if (error) reject(error);
-          resolve(results.length > 0 ? true : false);
-        }
-    );
-  });
 }

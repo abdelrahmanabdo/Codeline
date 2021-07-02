@@ -29,7 +29,7 @@ module.exports = {
         // create user token
         var token = createUserToken(userId);
         // Create new otp and send sms message to user
-        await createUserOTP(userId);
+        await createUserOTP(userId, req.body.phone);
         // Get user data
         const user = await userService.fetchSpecificUser(userId);
 

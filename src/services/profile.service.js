@@ -3,16 +3,20 @@ const db = require('../utils/db');
 module.exports = {
 
   /**
-   * Fetch all users.
+   * Fetch user's all profile data.
    * 
    * @returns {Object}
    * @public
    */
-  fetchUsersList: () => {
+  fetchUserProfile: (id) => {
     return new Promise((resolve, reject) => {
-      db.query(
-        'select * from users',
-        (error, results) => {
+      const queries = [
+        `SELECT * FROM user_profiles WHERE user_id = ${id}`,
+        `SELECT * FROM user_gallery WHERE user_id = ${id}`,
+        `SELECT * FROM user_occasions WHERE user_id = ${id}`,
+        `SELECT * FROM user_projects WHERE user_id = ${id}`,
+      ];
+      db.query(queries.join(';'), (error, results) => {
           if (error) return reject(error);
           resolve(results);
         }

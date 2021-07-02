@@ -1,21 +1,22 @@
 const otpService = require('../services/otp.service');
 const { validationResult } = require('express-validator');
+const twilioHandler = require('../utils/twilio');
+const userService = require('../services/user.service');
 
 module.exports = {
 
   /**
    * Create new user OTP code
    * 
-   * @param {Number} user_id
-   * @returns {String} otp_code
+   * @param {Number} userId
+   * @param {String} userPhone
    */
-  createUserOTP:  async (user_id) => {
-    const newOTP = await generateNewOTP(user_id);
-    otpService.createUserNewOTP(user_id, newOTP)
-      .then((res) => {
+  createUserOTP:  async (userId, userPhone) => {
+    const newOTP = await generateNewOTP(userId);
+    otpService.createUserNewOTP(userId, newOTP)
+      .then((code) => {
         // Send user sms message
-        // here
-        
+        twilioHandler(userPhone, 'Your OTP Code is ' + newOTP);
         return newOTP;
       })
       .catch((err) => {
@@ -26,13 +27,35 @@ module.exports = {
   /**
    * Resend new OTP code to user
    * 
-   * @param {Number} user_id
-   * @returns {String} otp_code
+   * @returns {Object}
    */
-  resendNewOTP: async (user_id) => {
-    const newOTP = await generateNewOTP(user_id)
-    // Send user sms message
-    // here
+  resendNewOTP: async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    const {user_id} = req.body;
+
+    const newOTP = await generateNewOTP(user_id);
+    // Get user's phone number
+    const userPhone = await userService.getUserPhone(user_id);
+
+    otpService.createUserNewOTP(user_id, newOTP)
+      .then(async (code) => {
+        // Send user sms message
+        await twilioHandler(userPhone, 'Your OTP Code is ' + newOTP);
+        return res.status(200).json({
+          success: true,
+          data: code
+        });
+      })
+      .catch((err) => {
+        return err;
+      });
 
     return newOTP;
   },
@@ -40,7 +63,7 @@ module.exports = {
   /**
    * Resend new OTP code to user
    * 
-   * @param {Number} user_id
+   * @param {Number} userId
    * @returns {String} otp_code
    */
   verifyOTP: async (req, res) => {
@@ -57,7 +80,9 @@ module.exports = {
       .then((result) => {
         res.send({
           success: result,
-          message: result ? 'OTP is valid' : 'OTP is not valid',
+          message: result
+            ? 'OTP is valid'
+            : 'OTP is not valid',
         });
       })
       .catch((err) => {
@@ -75,9 +100,9 @@ module.exports = {
  */
 generateNewOTP = (user_id) => {
   const otpStructure = `${user_id}0123456789abcdefghijklmnopqrstuvwxyz`
-   let OTP = '';
-   for (let i = 0; i < 6; i++) {
-     OTP += otpStructure[Math.floor(Math.random() * otpStructure.length)];
-   }
-   return OTP;
+  let OTP = '';
+  for (let i = 0; i < 6; i++) {
+    OTP += otpStructure[Math.floor(Math.random() * otpStructure.length)];
+  }
+  return OTP.toUpperCase();
 }

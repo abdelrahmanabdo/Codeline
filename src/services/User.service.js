@@ -128,6 +128,24 @@ module.exports = {
     });
   },
 
+  /**
+   * Get user phone number.
+   * 
+   * @returns {Array}
+   * @public
+   */
+  getUserPhone: (userId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        'SELECT phone from users where id = ? limit 1',
+        [userId],
+        (error, results) => {
+          if (error) return reject(error);
+          resolve(results.length > 0 ? results[0].phone : null);
+        }
+      );
+    });
+  },
 }
 
 

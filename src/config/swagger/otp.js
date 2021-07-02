@@ -5,18 +5,18 @@
  *    OTP:
  *      type: object,
  *      required:
- *        - phone
+ *        - user_id
  *        - password
  *      properties:
- *        phone:
+ *        user_id:
  *          type: string
- *          description: The user's phone
- *        password:
+ *          description: The user's id
+ *        otp:
  *          type: string
- *          description: The user's password
+ *          description: The user's OTP code
  *      example:
- *         phone: +201xxxxxxxx
- *         password: 1234567 
+ *         user_id: 1
+ *         otp: EASLG3 
  */
 
 /**
@@ -25,13 +25,13 @@
  *  post:
  *    summary: Verify the OTP
  *    tags: ['OTP']
- *    description: Add new user
+ *    description: Verify the OTP
  *    requestBody:
  *     required: true
  *     content:
  *      application/json:
  *        schema:
- *          $ref: '#/components/schemas/User'
+ *          $ref: '#/components/schemas/OTP'
  *    responses:
  *      '200':
  *        description: A successful response
@@ -44,17 +44,17 @@
 
 /**
  * @swagger
- *  /auth/login:
+ *  /otp/resend:
  *  post:
- *    summary: Get specific user's data.
- *    tags: ['Auth']
- *    description: Get the user by id
+ *    summary: resend new otp code.
+ *    tags: ['OTP']
+ *    description: Resend new OTP to user
  *    requestBody:
  *     required: true
  *     content:
  *      application/json:
  *        schema:
- *          $ref: '#/components/schemas/User'
+ *          $ref: '#/components/schemas/OTP'
  *    responses:
  *      '200':
  *        description: A successful response

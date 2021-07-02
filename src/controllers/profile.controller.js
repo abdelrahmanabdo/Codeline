@@ -10,17 +10,23 @@ module.exports = {
    * @public
    */
   getUserProfile: (req, res) => {
-    userService.fetchUsersList()
+    profileService.fetchUserProfile(req.params.id)
       .then((result) => {
+        const profile = {};
+        profile.information = result[0][0];
+        profile.gallery = result[1];
+        profile.projects = result[2];
+        profile.occasions = result[3];
+
         res.send({
           success: true,
-          data: result
+          data: profile
         })
       })
       .catch((err) => {
         return res.status(500).send({
           success: false,
-          message: err.sqlMessage
+          message: err
         });
       });
   },
