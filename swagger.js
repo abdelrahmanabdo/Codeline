@@ -7,8 +7,8 @@ module.exports = {
       description: 'Codeline app APIs documentation.'
     },
     servers: [
-      { url: 'http://localhost:3000/api/v1/' },
-      { url: 'https://app.codeline.co/api/v1/' }
+      { url: 'https://app.codeline.social/api/v1/' },
+      // { url: 'http://localhost:3000/api/v1/' }
     ],
     components: {
       securitySchemes: {
