@@ -11,7 +11,7 @@ module.exports = {
   fetchUserProfile: (id) => {
     return new Promise((resolve, reject) => {
       const queries = [
-        `SELECT * FROM user_profiles WHERE user_id = ${id}`,
+        `SELECT * FROM user_profile WHERE user_id = ${id}`,
         `SELECT * FROM user_gallery WHERE user_id = ${id}`,
         `SELECT * FROM user_occasions WHERE user_id = ${id}`,
         `SELECT * FROM user_projects WHERE user_id = ${id}`,
@@ -33,7 +33,7 @@ module.exports = {
   fetchProfileInformation: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM user_profiles WHERE user_id = ${id} LIMIT 1`,
+        `SELECT * FROM user_profile WHERE user_id = ${id} LIMIT 1`,
         (error, results) => {
           if (error) return reject(error);
           resolve(results.length > 0 ? results[0] : null);
@@ -104,10 +104,10 @@ module.exports = {
    */
   upsertProfileInformation: (action = 'insert', id, data) => {
     const query = action === 'insert'
-      ? `INSERT INTO user_profiles ( user_id, ${
+      ? `INSERT INTO user_profile ( user_id, ${
          Object.keys(data).reduce((cur, acc, index) => cur + acc + ((index + 1 === Object.keys(data).length) ? '' : ',') , '')}) VALUES (${id},${
          Object.values(data).reduce((cur, acc, index) => `${cur} '${acc}'` + ((index + 1 === Object.values(data).length) ? '' : ',') , '')})`
-      : `UPDATE user_profiles SET${
+      : `UPDATE user_profile SET${
          Object.keys(data).reduce((cur, acc, index) => `${cur} ${acc} = '${data[acc]}'` + ((index + 1 === Object.keys(data).length) ? '' : ',') , '')} WHERE user_id = ${id}`
         
     return new Promise((resolve, reject) => {
@@ -127,11 +127,12 @@ module.exports = {
    * @param {*} user_id 
    * @returns 
    */ 
-  insertNewGalleryRow: (user_id ,data) => {
+  insertNewGalleryRow: (userId, data) => {
     return new Promise((resolve, reject) => {
       // Insert new user record.
       db.query(
-        `INSERT INTO user_gallery (user_id, title, image) VALUES (${user_id}, ${data.title ? `'${data.title}'` : null}, '${data.image}')`,
+        `INSERT INTO user_gallery (user_id, title, image) VALUES (${
+          userId}, ${data.title ? `'${data.title}'` : null}, '${data.image}')`,
         (error, results) => {
           if (error) return reject(error)
           resolve(results.insertId);
@@ -145,11 +146,11 @@ module.exports = {
    * @param {*} user_id 
    * @returns 
    */
-  insertNewOccasionRow: (user_id, data) => {
+  insertNewOccasionRow: (userId, data) => {
     return new Promise((resolve, reject) => {
       // Insert new user record.
       db.query(
-        `INSERT INTO user_occasions (user_id, occasion_id, date) VALUES (${user_id}, ${data.occasion_id}, '${data.date}')`,
+        `INSERT INTO user_occasions (user_id, occasion_id, date) VALUES (${userId}, ${data.occasion_id}, '${data.date}')`,
         (error, results) => {
           if (error) return reject(error)
           resolve(results.insertId);
@@ -163,18 +164,54 @@ module.exports = {
    * @param {*} user_id 
    * @returns 
    */
-  insertNewProjectRow: (user_id, data) => {
+  insertNewProjectRow: (userId, data) => {
     return new Promise((resolve, reject) => {
       // Insert new user record.
       db.query(
         `INSERT INTO user_projects (user_id, title, description, image) VALUES (${
-          user_id}, ${data.title ? `'${data.title}'` : null}, ${data.description}, '${data.image}')`,
+          userId}, ${data.title ? `'${data.title}'` : null}, ${data.description}, '${data.image}')`,
         (error, results) => {
           if (error) return reject(error)
           resolve(results.insertId);
         }
       );
     });
+  },
+
+  /**
+   * Delete gallery item
+   * @param {*} userId 
+   * @param {*} itemId 
+   * @returns 
+   */
+  deleteGallery: (userId, itemId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `DELETE FROM user_gallery where id = ${itemId} AND user_id = ${userId}`,
+        (error, results) => {
+          if (error) return reject(error);
+          resolve(results.affectedRows > 0 ? true : false);
+        }
+      );
+    });
+  },
+
+  /**
+   * Delete Occasion item
+   * @param {*} userId 
+   * @param {*} itemId 
+   * @returns 
+   */
+  deleteOccasion: (userId, itemId) => {
+      return new Promise((resolve, reject) => {
+        db.query(
+          `DELETE FROM user_occasions where id = ${itemId} AND user_id = ${userId}`,
+          (error, results) => {
+            if (error) return reject(error);
+            resolve(results.affectedRows > 0 ? true : false);
+          }
+        );
+      });
   },
 
 
@@ -187,7 +224,7 @@ module.exports = {
   checkUserHasProfile: (user_id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        'SELECT * FROM user_profiles WHERE user_id = ?',
+        'SELECT * FROM user_profile WHERE user_id = ?',
         [user_id],
         (error, results) => {
           if (error) reject(error);

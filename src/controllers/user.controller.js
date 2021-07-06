@@ -22,25 +22,6 @@ module.exports = {
   },
 
   /**
-   * Get single user.
-   * 
-   * @returns {Object}
-   * @public
-   */
-  getUser: (req, res) => {
-    userService.fetchCurrentUser()
-      .then((result) => {
-        res.send({
-          success: true,
-          data: result
-        })
-      })
-      .catch((err) => {
-        throw err;
-      });
-  },
-
-  /**
    * Get specific user with id.
    * 
    * @returns {Object}

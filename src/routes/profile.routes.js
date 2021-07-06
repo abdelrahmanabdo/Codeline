@@ -13,7 +13,9 @@ const {
   upsertProfileInformation,
   insertProfileGallery,
   insertProfileOccasion,
-  insertProfileProject
+  insertProfileProject,
+  deleteProfileGallery,
+  deleteProfileOccasion
 } = require('../controllers/profile.controller');
 
 
@@ -28,7 +30,10 @@ router.post('/:id/gallery', createProfileGalleryValidator, insertProfileGallery)
 router.post('/:id/occasions', createProfileOccasionValidator ,insertProfileOccasion); // insert user's profile occasions
 router.post('/:id/projects', createProfileProjectValidator, insertProfileProject); // insert user's profile projects
 
-router.put('/:id/information', upsertProfileInformation); // insert user's profile information
+router.put('/:id/information', upsertProfileInformation); // update user's profile information
 
+router.delete('/:id/gallery/:itemId', deleteProfileGallery); // delete user's profile gallery
+router.delete('/:id/occasions/:itemId', deleteProfileOccasion); // delete user's profile occasions
+// router.delete('/:id/projects', deleteProfileProjectValidator, deleteProfileProject); // delete user's profile projects
 
 module.exports = router;  

@@ -1,6 +1,6 @@
-const { body } = require('express-validator');
 const profileService = require('../services/profile.service');
 const { validationResult } = require('express-validator');
+const userService = require('../services/user.service');
 
 module.exports = {
   /**
@@ -167,7 +167,7 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  insertProfileGallery: (req, res, next) => {
+  insertProfileGallery: async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({
@@ -176,22 +176,31 @@ module.exports = {
       });
     }
 
-    const data = JSON.parse(JSON.stringify(req.body));
+    const isUser = await userService.fetchSpecificUser(req.params.id);
 
-    // Update data
-    profileService.insertNewGalleryRow(req.params.id, data)
-    .then(() => {
-      return res.status(200).send({
-        success: true,
-        message: `Data is inserted successfully!`
-      });
-    })
-    .catch((err) => {
-      return res.status(500).send({
-        success: false,
-        message: err.sqlMessage
-      });
-    });
+    if (isUser) {
+      const data = JSON.parse(JSON.stringify(req.body));
+      // Update data
+      profileService.insertNewGalleryRow(req.params.id, data)
+        .then(() => {
+          return res.status(200).send({
+            success: true,
+            message: `Data is inserted successfully!`
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            success: false,
+            message: err.sqlMessage
+          });
+        });
+    } else {
+       return res.status(400).send({
+         success: false,
+         message: 'No User Found With This Id!'
+       });
+    }
+
   },
 
   /**
@@ -200,7 +209,7 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  insertProfileOccasion: (req, res, next) => {
+  insertProfileOccasion: async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({
@@ -209,14 +218,90 @@ module.exports = {
       });
     }
 
-    const data = JSON.parse(JSON.stringify(req.body));
+    const isUser = await userService.fetchSpecificUser(req.params.id);
 
-    // Update data
-    profileService.insertNewOccasionRow(req.params.id, data)
-      .then(() => {
+    if (isUser) {
+      const data = JSON.parse(JSON.stringify(req.body));
+      // Update data
+      profileService.insertNewOccasionRow(req.params.id, data)
+        .then(() => {
+          return res.status(200).send({
+            success: true,
+            message: `Data is inserted successfully!`
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            success: false,
+            message: err.sqlMessage
+          });
+        });
+    } else {
+      return res.status(404).send({
+        success: false,
+        message: 'No User Found With This Id!'
+      });
+    }
+  },
+
+  /**
+   * Insert profile Project.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  insertProfileProject: async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+    
+    const isUser = await userService.fetchSpecificUser(req.params.id);
+
+    if (isUser) {
+      const data = JSON.parse(JSON.stringify(req.body));
+      // Update data
+      profileService.insertNewProjectRow(req.params.id, data)
+        .then(() => {
+          return res.status(200).send({
+            success: true,
+            message: `Data is inserted successfully!`
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            success: false,
+            message: err.sqlMessage
+          });
+        });
+    } else {
+      return res.status(404).send({
+        success: false,
+        message: 'No User Found With This Id!'
+      });
+    }
+  },
+
+
+  /**
+   * Delete profile gallery.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  deleteProfileGallery: async (req, res) => {
+    const {id, itemId} = req.params;
+    // Delete row
+    profileService.deleteGallery(id, itemId)
+      .then((isDeleted) => {
         return res.status(200).send({
-          success: true,
-          message: `Data is inserted successfully!`
+          success: isDeleted,
+          message: isDeleted
+            ? `Data Is Deleted Successfully!` 
+            : `Please Check IDs!`
         });
       })
       .catch((err) => {
@@ -228,45 +313,29 @@ module.exports = {
   },
 
   /**
-   * Insert profile Project.
+   * Delete profile Occasion.
    * 
    * @returns {Object}
    * @public
    */
-  insertProfileProject: (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({
-        success: false,
-        errors: errors.array()
+  deleteProfileOccasion: async (req, res) => {
+    const {id, itemId} = req.params;
+    // Delete row
+    profileService.deleteOccasion(id, itemId)
+      .then((isDeleted) => {
+        return res.status(200).send({
+          success: isDeleted,
+          message: isDeleted
+            ? `Data Is Deleted Successfully!` 
+            : `Please Check IDs!`
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          success: false,
+          message: err.sqlMessage
+        });
       });
-    }
-
-    const data = JSON.parse(JSON.stringify(req.body));
-
-    // Update data
-    profileService.insertNewProjectRow(req.params.id, data)
-    .then(() => {
-      return res.status(200).send({
-        success: true,
-        message: `Data is inserted successfully!`
-      });
-    })
-    .catch((err) => {
-      return res.status(500).send({
-        success: false,
-        message: err.sqlMessage
-      });
-    });
   },
 
-  /**
-   * Remove user.
-   * 
-   * @returns {Object}
-   * @public
-   */
-  removeUser: (req, res, next) => {
-
-  },
 }

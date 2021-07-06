@@ -27,7 +27,7 @@ module.exports = {
    * @returns {Array}
    * @public
    */
-  fetchCurrentUser: () => {
+  fetchUser: () => {
     return new Promise((resolve, reject) => {
       db.query(
         'select * from users limit 1',

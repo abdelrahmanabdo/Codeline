@@ -34,14 +34,15 @@ module.exports = {
         const user = await userService.fetchSpecificUser(userId);
 
         res.send({
+          token,
           success: true,
           user: {
             id: user.id,
             phone: user.phone,
-            is_active: false,
+            is_active: true,
+            is_online: true,
             created_at: user.created_at
-          },
-          token
+          }
         });
       })
       .catch((err) => {

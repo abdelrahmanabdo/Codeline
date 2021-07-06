@@ -24,6 +24,7 @@ module.exports = {
               'INSERT INTO users (phone, password) VALUES (?, ?) ',
               [body.phone, hashedPassword],
               (error, results) => {
+                console.log(error)
                 if (error) reject(error)
                 resolve(results.insertId);
               }
