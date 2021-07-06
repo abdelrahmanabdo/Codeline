@@ -16,7 +16,7 @@
  *          description: The user's password
  *      example:
  *         phone: +201xxxxxxxx
- *         password: 1234567 
+ *         password: "1234567" 
  */
 
 /**
