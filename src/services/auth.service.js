@@ -46,8 +46,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const {phone} = body;
       db.query(
-        'SELECT * FROM users WHERE phone = ?',
-        [phone],
+        `SELECT * FROM users WHERE phone LIKE '%${phone}'`,
         (error, results) => {
           if (error) return reject(error)
           if (results.length === 0) return reject('No User Found!');

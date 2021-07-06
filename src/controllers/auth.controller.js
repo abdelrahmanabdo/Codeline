@@ -34,8 +34,8 @@ module.exports = {
         const user = await userService.fetchSpecificUser(userId);
 
         res.send({
-          token,
           success: true,
+          token,
           user: {
             id: user.id,
             phone: user.phone,
