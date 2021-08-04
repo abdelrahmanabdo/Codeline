@@ -7,6 +7,7 @@
  *      required:
  *        - phone
  *        - password
+ *        - name
  *      properties:
  *        phone:
  *          type: string
@@ -18,9 +19,10 @@
  *          type: string
  *          description: The user's name
  *      example:
- *         phone: +201xxxxxxxx
+ *         phone: +201xxxxxxxxx
  *         password: "1234567" 
  *         name: "New codeline user"
+ * 
  */
 
 /**
@@ -35,7 +37,7 @@
  *     content:
  *      application/json:
  *        schema:
- *          $ref: '#/components/schemas/User'
+ *          $ref: '#/components/schemas/Auth'
  *    responses:
  *      '200':
  *        description: A successful response
@@ -58,7 +60,12 @@
  *     content:
  *      application/json:
  *        schema:
- *          $ref: '#/components/schemas/User'
+ *          type: object
+ *          properties:
+ *            phone:
+ *              type: string
+ *            password:
+ *              type: string
  *    responses:
  *      '200':
  *        description: A successful response

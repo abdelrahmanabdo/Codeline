@@ -109,7 +109,6 @@ module.exports = {
 
   /**
    * Update user password.
-   * Change name, email and avatar columns values only.
    * 
    * @returns {Object}
    * @public
@@ -117,6 +116,26 @@ module.exports = {
   updateUserPassword: (id, password) => {
     return new Promise((resolve, reject) => {
       cryptPassword(password, (err, hashedPassword) => {
+        db.query(
+          `UPDATE users set password = '${hashedPassword}' where id = ${id}`,
+          (error, results) => {
+            if (error) reject(error);
+            resolve(results);
+          }
+        );
+      });
+    });
+  },
+
+  /**
+   * Reset user password.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  resetUserPassword: (id) => {
+    return new Promise((resolve, reject) => {
+      cryptPassword('12345678', (err, hashedPassword) => {
         db.query(
           `UPDATE users set password = '${hashedPassword}' where id = ${id}`,
           (error, results) => {

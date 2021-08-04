@@ -19,9 +19,6 @@ module.exports = {
     body('name')
       .notEmpty()
       .withMessage('name is required'),
-    body('email')
-      .isEmail()
-      .withMessage('Email is invalid')
   ],
 
   /**

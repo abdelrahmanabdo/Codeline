@@ -128,7 +128,7 @@ module.exports = {
   },
 
   /**
-   * Update user pin code.
+   * Update user's password.
    * 
    * @private
    */
@@ -146,6 +146,35 @@ module.exports = {
         return res.status(200).send({
           success: true,
           message: 'Password is updated successfully!'
+        });
+      })
+      .catch(() => {
+        return res.status(500).send({
+          success: false,
+          message: 'Something wrong happened!'
+        });
+      });
+  },
+
+  /**
+   * Reset user's password.
+   * 
+   * @private
+   */
+  resetPassword: (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    userService.resetUserPassword(req.params.id)
+      .then(() => {
+        return res.status(200).send({
+          success: true,
+          message: 'Password is reset successfully!'
         });
       })
       .catch(() => {

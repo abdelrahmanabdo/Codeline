@@ -11,6 +11,7 @@ const {
   remove,
   updatePinCode,
   updatePassword,
+  resetPassword,
   getUsers
 } = require('../controllers/user.controller');
 
@@ -20,7 +21,8 @@ router.post('', createUserValidator, post); // add new user
 router.put('/:id', update); // update user data
 router.delete('/:id', remove); // delete user
 router.put('/:id/pin_code', updatePinCodeValidator, updatePinCode); // Update user's pin code
-router.put('/:id/password', updatePasswordValidator, updatePassword); // Update user's password
+router.put('/:id/password/update', updatePasswordValidator, updatePassword); // Update user's password
+router.put('/:id/password/reset', updatePasswordValidator, resetPassword); // Update user's password
 router.get('', getUsers); // get users list
 
 module.exports = router;
