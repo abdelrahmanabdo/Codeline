@@ -16,6 +16,11 @@ module.exports = {
         return reject('Phone number is already exists!')
       }
 
+      // In case user add avatar
+      if (body.avatar) {
+        body.avatar = '';
+      }
+
       // Encrypt Password
       cryptPassword(body.password, (err, hashedPassword) => {
         if (hashedPassword) {
