@@ -135,11 +135,6 @@
  *        type: number
  *       required: true
  *       description: The user's id
- *    requestBody:
- *     content:
- *      application/json:
- *        schema:
- *          $ref: '#/components/schemas/User'
  *    responses:
  *      '200':
  *        description: A successful response

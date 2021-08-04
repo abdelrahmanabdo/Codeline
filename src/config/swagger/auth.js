@@ -20,7 +20,7 @@
  *          description: The user's name
  *      example:
  *         phone: +201xxxxxxxxx
- *         password: "1234567" 
+ *         password: "12345678" 
  *         name: "New codeline user"
  * 
  */
