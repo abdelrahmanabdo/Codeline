@@ -293,9 +293,9 @@ module.exports = {
    * @public
    */
   deleteProfileGallery: async (req, res) => {
-    const {id, itemId} = req.params;
+    const {id, galleryId} = req.params;
     // Delete row
-    profileService.deleteGallery(id, itemId)
+    profileService.deleteGallery(id, galleryId)
       .then((isDeleted) => {
         return res.status(200).send({
           success: isDeleted,
@@ -319,9 +319,9 @@ module.exports = {
    * @public
    */
   deleteProfileOccasion: async (req, res) => {
-    const {id, itemId} = req.params;
+    const {id, occasionId} = req.params;
     // Delete row
-    profileService.deleteOccasion(id, itemId)
+    profileService.deleteOccasion(id, occasionId)
       .then((isDeleted) => {
         return res.status(200).send({
           success: isDeleted,

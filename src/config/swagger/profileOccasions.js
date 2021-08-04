@@ -93,7 +93,7 @@
 
 /**
  * @swagger
- *  /profile/{id}/occasions:
+ *  /profile/{id}/occasions/{occasionId}:
  *  put:
  *    summary: Update user's profile occasions.
  *    tags: ['Profile Occasions']
@@ -105,6 +105,12 @@
  *        type: number
  *       required: true
  *       description: The user's id
+ *     - in: path
+ *       name: occasion's id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The occasion's id
  *    requestBody:
  *     required: true
  *     content:
@@ -123,7 +129,7 @@
 
 /**
  * @swagger
- *  /profile/{id}/occasions:
+ *  /profile/{id}/occasions/{occasionId}:
  *  delete:
  *    summary: Delete user's profile occasions.
  *    tags: ['Profile Occasions']
@@ -135,6 +141,12 @@
  *        type: number
  *       required: true
  *       description: The user's id
+ *     - in: path
+ *       name: occasion's id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The occasion's id
  *    requestBody:
  *     required: true
  *     content:

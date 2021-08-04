@@ -16,6 +16,12 @@ module.exports = {
       .withMessage('Password is required')
       .isLength({ min: 8 })
       .withMessage('Password must be at least 8 digits'),
+    body('name')
+      .notEmpty()
+      .withMessage('name is required'),
+    body('email')
+      .isEmail()
+      .withMessage('Email is invalid')
   ],
 
   /**

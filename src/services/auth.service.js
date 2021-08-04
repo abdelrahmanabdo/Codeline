@@ -21,8 +21,14 @@ module.exports = {
         if (hashedPassword) {
           // Insert new user record.
           db.query(
-              'INSERT INTO users (phone, password) VALUES (?, ?) ',
-              [body.phone, hashedPassword],
+              'INSERT INTO users (phone, name, password, avatar, email) VALUES (?, ?, ?, ?, ?) ',
+              [
+                body.phone,
+                body.name,
+                hashedPassword,
+                body.avatar,
+                body.email,
+              ],
               (error, results) => {
                 console.log(error)
                 if (error) reject(error)

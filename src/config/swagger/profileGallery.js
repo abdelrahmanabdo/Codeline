@@ -7,31 +7,15 @@
  *      required:
  *        - user_id
  *      properties:
- *        nickname:
+ *        image:
  *          type: string
- *          description: The user's profile nickname
- *        birth_date:
+ *          description: The user's gallery image
+ *        title:
  *          type: string
- *          description: The user's profile birth date
- *        martial_status_id:
- *          type: number
- *          description: The user's profile martial status id in martial statuses table 
- *        location_id:
- *          type: number
- *          description: The user's profile location id in locations table 
- *        CV:
- *          type: string
- *          description: The user's profile CV base64
- *        bio:
- *          type: string
- *          description: The user's profile bio
+ *          description: The user's gallery title
  *      example:
- *         nickname: Abdo
- *         birth_date: 15/7/1995 
- *         martial_status_id: 1
- *         location_id: 1
- *         CV: CV file base64 string
- *         bio: Hello
+ *         image: "base64"
+ *         title: Hello
  */
 
 /**
@@ -93,7 +77,7 @@
 
 /**
  * @swagger
- *  /profile/{id}/gallery:
+ *  /profile/{id}/gallery/{galleryId}:
  *  put:
  *    summary: Update user's profile gallery.
  *    tags: ['Profile Gallery']
@@ -105,6 +89,12 @@
  *        type: number
  *       required: true
  *       description: The user's id
+ *     - in: path
+ *       name: gallery's id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The gallery's id
  *    requestBody:
  *     required: true
  *     content:
@@ -123,7 +113,7 @@
 
 /**
  * @swagger
- *  /profile/{id}/gallery:
+ *  /profile/{id}/gallery/{galleryId}:
  *  delete:
  *    summary: Delete user's profile gallery.
  *    tags: ['Profile Gallery']
@@ -135,6 +125,12 @@
  *        type: number
  *       required: true
  *       description: The user's id
+ *     - in: path
+ *       name: gallery's id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The gallery's id
  *    requestBody:
  *     required: true
  *     content:

@@ -14,9 +14,13 @@
  *        password:
  *          type: string
  *          description: The user's password
+ *        name:
+ *          type: string
+ *          description: The user's name
  *      example:
  *         phone: +201xxxxxxxx
  *         password: "1234567" 
+ *         name: "New codeline user"
  */
 
 /**
