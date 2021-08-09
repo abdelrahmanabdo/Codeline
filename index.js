@@ -14,6 +14,7 @@ const authRoutes = require('./src/routes/auth.routes');
 const userRoutes = require('./src/routes/user.routes');
 const profileRoutes = require('./src/routes/profile.routes');
 const otpRoutes = require('./src/routes/otp.routes');
+const lookupsRoutes = require('./src/routes/lookups.routes');
 
 // Auth middleware
 const authMiddleware = require('./src/middlewares/auth.middleware');
@@ -27,6 +28,7 @@ app.use(express.urlencoded({extended: false, limit: '50mb'}));
 app.use('/public', express.static('resources'));
 
 // Routes
+app.use('/api/v1', lookupsRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/otp', otpRoutes);
 app.use('/api/v1/users', authMiddleware, userRoutes);
