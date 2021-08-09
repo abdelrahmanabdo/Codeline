@@ -23,6 +23,7 @@
  *         password: "12345678" 
  *         name: "New codeline user"
  *         email: "abdo@bodecanada.com"
+ *         avatar: "base64"
  * 
  * 
  */

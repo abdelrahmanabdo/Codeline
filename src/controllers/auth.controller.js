@@ -40,6 +40,8 @@ module.exports = {
             id: user.id,
             phone: user.phone,
             name: user.name,
+            email: user.email,
+            avatar: user.avatar,
             is_active: true,
             is_online: true,
             created_at: user.created_at
