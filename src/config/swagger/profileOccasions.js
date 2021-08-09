@@ -7,31 +7,15 @@
  *      required:
  *        - user_id
  *      properties:
- *        nickname:
+ *        occasion_id:
  *          type: string
  *          description: The user's profile nickname
- *        birth_date:
+ *        date:
  *          type: string
  *          description: The user's profile birth date
- *        martial_status_id:
- *          type: number
- *          description: The user's profile martial status id in martial statuses table 
- *        location_id:
- *          type: number
- *          description: The user's profile location id in locations table 
- *        CV:
- *          type: string
- *          description: The user's profile CV base64
- *        bio:
- *          type: string
- *          description: The user's profile bio
  *      example:
- *         nickname: Abdo
- *         birth_date: 15/7/1995 
- *         martial_status_id: 1
- *         location_id: 1
- *         CV: CV file base64 string
- *         bio: Hello
+ *         occasion_id: 1
+ *         date: 15/7/1995 
  */
 
 /**
@@ -67,7 +51,7 @@
 
 /**
  * @swagger
- *  /profile/{id}/occasions:
+ *  /profile/{id}/occasions/{occasionId}:
  *  get:
  *    summary: Get user's profile occasions.
  *    tags: ['Profile Occasions']
@@ -79,6 +63,12 @@
  *        type: number
  *       required: true
  *       description: The user's id
+*     - in: path
+ *       name: occasionId
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The occasion's id
  *    responses:
  *      '200':
  *        description: A successful response
@@ -106,7 +96,7 @@
  *       required: true
  *       description: The user's id
  *     - in: path
- *       name: occasion's id
+ *       name: occasionId
  *       schema:
  *        type: number
  *       required: true
@@ -142,7 +132,7 @@
  *       required: true
  *       description: The user's id
  *     - in: path
- *       name: occasion's id
+ *       name: occasionId
  *       schema:
  *        type: number
  *       required: true

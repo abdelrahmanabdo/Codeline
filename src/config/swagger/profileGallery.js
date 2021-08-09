@@ -51,7 +51,7 @@
 
 /**
  * @swagger
- *  /profile/{id}/gallery:
+ *  /profile/{id}/gallery/{galleryId}:
  *  get:
  *    summary: Get user's profile gallery.
  *    tags: ['Profile Gallery']
@@ -63,6 +63,12 @@
  *        type: number
  *       required: true
  *       description: The user's id
+ *     - in: path
+ *       name: galleryId
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The gallery's id
  *    responses:
  *      '200':
  *        description: A successful response
@@ -90,7 +96,7 @@
  *       required: true
  *       description: The user's id
  *     - in: path
- *       name: gallery's id
+ *       name: galleryId
  *       schema:
  *        type: number
  *       required: true
@@ -126,7 +132,7 @@
  *       required: true
  *       description: The user's id
  *     - in: path
- *       name: gallery's id
+ *       name: galleryId
  *       schema:
  *        type: number
  *       required: true

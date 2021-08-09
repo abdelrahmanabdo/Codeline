@@ -51,7 +51,7 @@
 
 /**
  * @swagger
- *  /profile/{id}/projects:
+ *  /profile/{id}/projects/{projectId}:
  *  get:
  *    summary: Update user's profile projects.
  *    tags: ['Profile Projects']
@@ -63,6 +63,12 @@
  *        type: number
  *       required: true
  *       description: The user's id
+ *     - in: path
+ *       name: projectId
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The project's id
  *    responses:
  *      '200':
  *        description: A successful response
@@ -90,7 +96,7 @@
  *       required: true
  *       description: The user's id
  *     - in: path
- *       name: project's id
+ *       name: projectId
  *       schema:
  *        type: number
  *       required: true
@@ -126,7 +132,7 @@
  *       required: true
  *       description: The user's id
  *     - in: path
- *       name: project's id
+ *       name: projectId
  *       schema:
  *        type: number
  *       required: true
