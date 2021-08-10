@@ -16,7 +16,7 @@ module.exports = {
         url: 'https://app.codeline.social/api/v1/',
         description: "Development server"
       },
-      // { url: 'http://localhost:3000/api/v1/' }
+      { url: 'http://localhost:3000/api/v1/' }
     ],
     components: {
       securitySchemes: {

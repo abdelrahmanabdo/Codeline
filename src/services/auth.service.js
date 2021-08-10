@@ -1,5 +1,6 @@
 const db = require('../utils/db');
 var bcrypt = require('bcrypt');
+var upload = require('../helpers/upload');
 
 module.exports = {
 
@@ -18,7 +19,8 @@ module.exports = {
 
       // In case user add avatar
       if (body.avatar) {
-        body.avatar = '';
+        const storedAvatar = upload(body.avatar, 'test', 'users');
+        body.avatar = storedAvatar;
       }
 
       // Encrypt Password

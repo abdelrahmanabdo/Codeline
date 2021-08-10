@@ -11,10 +11,10 @@ module.exports = {
   getLanguages: (req, res) => {
     lookupsService
       .fetchLanguages()
-      .then(async (res) => {
+      .then(async (data) => {
         res.send({
           success: true,
-          data: res
+          data
         });
       })
       .catch((err) => {
@@ -34,10 +34,10 @@ module.exports = {
   getCities: (req, res) => {
     lookupsService
       .fetchCities()
-      .then(async (res) => {
+      .then(async (data) => {
         res.send({
           success: true,
-          data: res
+          data
         });
       })
       .catch((err) => {
@@ -57,10 +57,10 @@ module.exports = {
   getOccasions: (req, res) => {
     lookupsService
       .fetchOccasions()
-      .then(async (res) => {
+      .then(async (data) => {
         res.send({
           success: true,
-          data: res
+          data
         });
       })
       .catch((err) => {
@@ -80,10 +80,10 @@ module.exports = {
   getMaritalStatuses: (req, res) => {
     lookupsService
       .fetchMaritalStatuses()
-      .then(async (res) => {
+      .then(async (data) => {
         res.send({
           success: true,
-          data: res
+          data
         });
       })
       .catch((err) => {
