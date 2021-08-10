@@ -22,9 +22,9 @@
  * @swagger
  *  /profile/{id}/projects:
  *  post:
- *    summary: Add user's profile projects.
+ *    summary: Add user's profile project.
  *    tags: ['Profile Projects']
- *    description: Add user's profile projects.
+ *    description: Add user's profile project.
  *    parameters:
  *     - in: path
  *       name: id
@@ -47,15 +47,40 @@
  *         description: Internal Server error ( Contact The developer)
  */
 
+/**
+ * @swagger
+ *  /profile/{id}/projects:
+ *  get:
+ *    summary: Get user's profile projects.
+ *    tags: ['Profile Projects']
+ *    description: Get user's profile projects.
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The user's id
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '422':
+ *         description: Missing params
+ *      '404':
+ *         description: The user is not found
+ *      '500':
+ *         description: Internal Server error ( Contact The developer)
+ */
+
 
 
 /**
  * @swagger
  *  /profile/{id}/projects/{projectId}:
  *  get:
- *    summary: Update user's profile projects.
+ *    summary: Get specific profile project.
  *    tags: ['Profile Projects']
- *    description: Update user's profile projects.
+ *    description: Get specific profile project.
  *    parameters:
  *     - in: path
  *       name: id

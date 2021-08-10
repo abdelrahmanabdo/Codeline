@@ -22,9 +22,9 @@
  * @swagger
  *  /profile/{id}/occasions:
  *  post:
- *    summary: Add user's profile occasions.
+ *    summary: Add user's profile occasion.
  *    tags: ['Profile Occasions']
- *    description: Add user's profile occasions.
+ *    description: Add user's profile occasion.
  *    parameters:
  *     - in: path
  *       name: id
@@ -47,15 +47,39 @@
  *         description: Internal Server error ( Contact The developer)
  */
 
+/**
+ * @swagger
+ *  /profile/{id}/occasions:
+ *  get:
+ *    summary: Get user's profile occasions.
+ *    tags: ['Profile Occasions']
+ *    description: Get user's profile occasions.
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The user's id
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '422':
+ *         description: Missing params
+ *      '404':
+ *         description: The user is not found
+ *      '500':
+ *         description: Internal Server error ( Contact The developer)
+ */
 
 
 /**
  * @swagger
  *  /profile/{id}/occasions/{occasionId}:
  *  get:
- *    summary: Get user's profile occasions.
+ *    summary: Get specific profile occasion.
  *    tags: ['Profile Occasions']
- *    description: Get user's profile occasions.
+ *    description: Get specific profile occasion.
  *    parameters:
  *     - in: path
  *       name: id
@@ -85,9 +109,9 @@
  * @swagger
  *  /profile/{id}/occasions/{occasionId}:
  *  put:
- *    summary: Update user's profile occasions.
+ *    summary: Update user's profile occasion.
  *    tags: ['Profile Occasions']
- *    description: Update user's profile occasions.
+ *    description: Update user's profile occasion.
  *    parameters:
  *     - in: path
  *       name: id
@@ -121,9 +145,9 @@
  * @swagger
  *  /profile/{id}/occasions/{occasionId}:
  *  delete:
- *    summary: Delete user's profile occasions.
+ *    summary: Delete user's profile occasion1.
  *    tags: ['Profile Occasions']
- *    description: Delete user's profile occasions.
+ *    description: Delete user's profile occasion1.
  *    parameters:
  *     - in: path
  *       name: id

@@ -47,15 +47,38 @@
  *         description: Internal Server error ( Contact The developer)
  */
 
-
+/**
+ * @swagger
+ *  /profile/{id}/gallery:
+ *  get:
+ *    summary: Get user's all gallery.
+ *    tags: ['Profile Gallery']
+ *    description: Get user's profile gallery.
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The user's id
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '422':
+ *         description: Missing params
+ *      '404':
+ *         description: The user is not found
+ *      '500':
+ *         description: Internal Server error ( Contact The developer)
+ */
 
 /**
  * @swagger
  *  /profile/{id}/gallery/{galleryId}:
  *  get:
- *    summary: Get user's profile gallery.
+ *    summary: Get user's profile gallery item.
  *    tags: ['Profile Gallery']
- *    description: Get user's profile gallery.
+ *    description: Get user's profile gallery item .
  *    parameters:
  *     - in: path
  *       name: id

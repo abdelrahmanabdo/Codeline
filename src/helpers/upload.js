@@ -29,9 +29,7 @@ module.exports = function(data, fileName, folderName) {
 
   try {
     const path = `/storage/images/${folderName}/${fileName}.${type}`;
-    
     if (!fs.existsSync(path)) {
-      console.log('not es')
       fs.mkdirSync(path, {
         recursive: true
       });
