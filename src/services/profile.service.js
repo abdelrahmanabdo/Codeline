@@ -1,4 +1,5 @@
 const db = require('../utils/db');
+var upload = require('../helpers/upload');
 
 module.exports = {
 
@@ -25,7 +26,7 @@ module.exports = {
   },
 
   /**
-   * Fetch current user.
+   * Fetch user profile.
    * 
    * @returns {Array}
    * @public
@@ -43,12 +44,12 @@ module.exports = {
   },
 
   /**
-   * Fetch current user.
+   * Fetch profile galleries.
    * 
    * @returns {Array}
    * @public
    */
-  fetchProfileGallery: (id) => {
+  fetchProfileGalleries: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
         `SELECT * FROM user_gallery WHERE user_id = ${id}`,
@@ -79,7 +80,7 @@ module.exports = {
   },
 
   /**
-   * Fetch current user.
+   * Fetch profile projects.
    * 
    * @returns {Array}
    * @public
@@ -96,6 +97,60 @@ module.exports = {
     });
   },
 
+  /**
+   * Fetch single gallery.
+   * 
+   * @returns {Array}
+   * @public
+   */
+  fetchSingleGallery: (user_id, galleryId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM user_gallery WHERE user_id = ${user_id} and id = ${galleryId}`,
+        (error, results) => {
+          if (error) return reject(error);
+          resolve(results.length > 0 ? results[0] : null);
+        }
+      );
+    });
+  },
+
+  /**
+   * Fetch single occasion.
+   * 
+   * @returns {Array}
+   * @public
+   */
+  fetchSingleOccasion: (user_id, occasionId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM user_occasions WHERE user_id = ${user_id} and id = ${occasionId}`,
+        (error, results) => {
+          if (error) return reject(error);
+          resolve(results.length > 0 ? results[0] : null);
+        }
+      );
+    });
+  },
+
+  /**
+   * Fetch single project.
+   * 
+   * @returns {Array}
+   * @public
+   */
+  fetchSingleProject: (user_id, projectId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM user_projects WHERE user_id = ${user_id} and id = ${projectId}`,
+        (error, results) => {
+          if (error) return reject(error);
+          resolve(results.length > 0 ? results[0] : null);
+        }
+      );
+    });
+  },
+  
   /**
    * Fetch specific user.
    * 
@@ -127,7 +182,17 @@ module.exports = {
    * @param {*} user_id 
    * @returns 
    */ 
-  insertNewGalleryRow: (userId, data) => {
+  insertNewGalleryRow: async (userId, data) => {
+    // In case user add image
+    if (data.image) {
+      const storedImage = await upload(
+          data.image,
+          data.title ? data.title.replace(/\s+/g, '').trim() : Math.random(),
+          `galleries/${userId}`
+        );
+      data.image = storedImage;
+    }
+
     return new Promise((resolve, reject) => {
       // Insert new user record.
       db.query(
@@ -164,12 +229,22 @@ module.exports = {
    * @param {*} user_id 
    * @returns 
    */
-  insertNewProjectRow: (userId, data) => {
+  insertNewProjectRow: async (userId, data) => {
+    // In case user add image
+    if (data.image) {
+      const storedImage = await upload(
+        data.image, 
+        data.title.replace(/\s+/g, '').trim(),
+        `projects/${userId}`
+      );
+      data.image = storedImage;
+    }
+
     return new Promise((resolve, reject) => {
       // Insert new user record.
       db.query(
         `INSERT INTO user_projects (user_id, title, description, image) VALUES (${
-          userId}, ${data.title ? `'${data.title}'` : null}, ${data.description}, '${data.image}')`,
+          userId}, '${data.title}', '${data.description}', '${data.image}')`,
         (error, results) => {
           if (error) return reject(error)
           resolve(results.insertId);
@@ -188,6 +263,24 @@ module.exports = {
     return new Promise((resolve, reject) => {
       db.query(
         `DELETE FROM user_gallery where id = ${itemId} AND user_id = ${userId}`,
+        (error, results) => {
+          if (error) return reject(error);
+          resolve(results.affectedRows > 0 ? true : false);
+        }
+      );
+    });
+  },
+
+  /**
+   * Delete project item
+   * @param {*} userId 
+   * @param {*} itemId 
+   * @returns 
+   */
+  deleteProject: (userId, itemId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `DELETE FROM user_projects where id = ${itemId} AND user_id = ${userId}`,
         (error, results) => {
           if (error) return reject(error);
           resolve(results.affectedRows > 0 ? true : false);

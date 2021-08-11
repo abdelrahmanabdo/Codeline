@@ -5,7 +5,9 @@
  *    Profile Projects:
  *      type: object,
  *      required:
- *        - user_id
+ *        - title
+ *        - description
+ *        - image
  *      properties:
  *        description:
  *          type: string
@@ -14,6 +16,7 @@
  *          type: string
  *          description: The user's project image
  *      example:
+ *         title: Project title
  *         description: Project description is here......
  *         image: "base64"
  */

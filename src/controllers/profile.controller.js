@@ -55,13 +55,13 @@ module.exports = {
 
 
  /**
-   * Get profile Gallery.
+   * Get profile Galleries.
    * 
    * @returns {Object}
    * @public
    */
-  getProfileGallery: (req, res) => {
-    profileService.fetchProfileGallery(req.params.id)
+  getProfileGalleries: (req, res) => {
+    profileService.fetchProfileGalleries(req.params.id)
       .then((result) => {
         res.send({
           success: true,
@@ -121,6 +121,76 @@ module.exports = {
       });
   },
 
+
+  /**
+    * Get profile single Gallery.
+    * 
+    * @returns {Object}
+    * @public
+    */
+  getSingleGallery: (req, res) => {
+    const {id, galleryId} = req.params;
+    profileService.fetchSingleGallery(id, galleryId)
+      .then((result) => {
+        res.send({
+          success: true,
+          data: result
+        })
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          success: false,
+          message: err.sqlMessage
+        });
+      });
+  },
+
+  /**
+    * Get profile single Occasion.
+    * 
+    * @returns {Object}
+    * @public
+    */
+  getSingleOccasion: (req, res) => {
+    const {id, occasionId} = req.params;
+    profileService.fetchSingleOccasion(id, occasionId)
+      .then((result) => {
+        res.send({
+          success: true,
+          data: result
+        })
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          success: false,
+          message: err.sqlMessage
+        });
+      });
+  },
+
+  /**
+    * Get profile single project.
+    * 
+    * @returns {Object}
+    * @public
+    */
+  getSingleProject: (req, res) => {
+    const {id, projectId} = req.params;
+    profileService.fetchSingleProject(id, projectId)
+      .then((result) => {
+        res.send({
+          success: true,
+          data: result
+        })
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          success: false,
+          message: err.sqlMessage
+        });
+      });
+  },
+
   /**
    * Upsert user's profile information.
    * 
@@ -177,11 +247,9 @@ module.exports = {
     }
 
     const isUser = await userService.fetchSpecificUser(req.params.id);
-
     if (isUser) {
-      const data = JSON.parse(JSON.stringify(req.body));
       // Update data
-      profileService.insertNewGalleryRow(req.params.id, data)
+      profileService.insertNewGalleryRow(req.params.id, req.body)
         .then(() => {
           return res.status(200).send({
             success: true,
@@ -219,11 +287,9 @@ module.exports = {
     }
 
     const isUser = await userService.fetchSpecificUser(req.params.id);
-
     if (isUser) {
-      const data = JSON.parse(JSON.stringify(req.body));
       // Update data
-      profileService.insertNewOccasionRow(req.params.id, data)
+      profileService.insertNewOccasionRow(req.params.id, req.body)
         .then(() => {
           return res.status(200).send({
             success: true,
@@ -264,7 +330,7 @@ module.exports = {
     if (isUser) {
       const data = JSON.parse(JSON.stringify(req.body));
       // Update data
-      profileService.insertNewProjectRow(req.params.id, data)
+      await profileService.insertNewProjectRow(req.params.id, data)
         .then(() => {
           return res.status(200).send({
             success: true,
@@ -296,6 +362,32 @@ module.exports = {
     const {id, galleryId} = req.params;
     // Delete row
     profileService.deleteGallery(id, galleryId)
+      .then((isDeleted) => {
+        return res.status(200).send({
+          success: isDeleted,
+          message: isDeleted
+            ? `Data Is Deleted Successfully!` 
+            : `Please Check IDs!`
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          success: false,
+          message: err.sqlMessage
+        });
+      });
+  },
+
+  /**
+   * Delete profile gallery.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  deleteProfileProject: async (req, res) => {
+    const {id, projectId} = req.params;
+    // Delete row
+    profileService.deleteProject(id, projectId)
       .then((isDeleted) => {
         return res.status(200).send({
           success: isDeleted,

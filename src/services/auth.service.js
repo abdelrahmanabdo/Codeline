@@ -10,7 +10,7 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  createNewAccount: (body) => {
+  createNewAccount: async (body) => {
     return new Promise(async (resolve, reject) => {
       // Check if phone number is registered before or not
       if (await isPhoneAlreadyExist(body.phone)) {
@@ -19,8 +19,8 @@ module.exports = {
 
       // In case user add avatar
       if (body.avatar) {
-        const storedAvatar = upload(body.avatar, 'test', 'users');
-        body.avatar = storedAvatar;
+        const storedAvatar = await upload(body.avatar, body.name.replace(/\s+/g, '').trim(), `users`);
+        body.avatar = storedAvatar || null;
       }
 
       // Encrypt Password

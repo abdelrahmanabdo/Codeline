@@ -54,7 +54,10 @@
  *     content:
  *      application/json:
  *        schema:
- *          $ref: '#/components/schemas/OTP'
+ *          type: object
+ *          properties:
+ *            user_id:
+ *              type: number
  *    responses:
  *      '200':
  *        description: A successful response

@@ -7,23 +7,32 @@ const {
 const {
   getUserProfile,
   getProfileInformation,
-  getProfileGallery,
+  getProfileGalleries,
   getProfileOccasions,
   getProfileProjects,
+  getSingleGallery,
+  getSingleOccasion,
+  getSingleProject,
   upsertProfileInformation,
   insertProfileGallery,
   insertProfileOccasion,
   insertProfileProject,
   deleteProfileGallery,
-  deleteProfileOccasion
+  deleteProfileOccasion,
+  deleteProfileProject
 } = require('../controllers/profile.controller');
 
 
 router.get('/:id', getUserProfile); // get users list
 router.get('/:id/information', getProfileInformation); // get user's profile information
-router.get('/:id/gallery', getProfileGallery); // get user's profile gallery
+router.get('/:id/gallery', getProfileGalleries); // get user's profile gallery
 router.get('/:id/occasions', getProfileOccasions); // get user's profile occasions
 router.get('/:id/projects', getProfileProjects); // get user's profile projects
+
+router.get('/:id/gallery/:galleryId', getSingleGallery); // get user's profile gallery
+router.get('/:id/occasions/:occasionId', getSingleOccasion); // get user's profile occasion
+router.get('/:id/projects/:projectId', getSingleProject); // get user's profile project
+
 
 router.post('/:id/information', upsertProfileInformation); // insert user's profile information
 router.post('/:id/gallery', createProfileGalleryValidator, insertProfileGallery); // insert user's profile gallery
@@ -32,8 +41,8 @@ router.post('/:id/projects', createProfileProjectValidator, insertProfileProject
 
 router.put('/:id/information', upsertProfileInformation); // update user's profile information
 
-router.delete('/:id/gallery/:itemId', deleteProfileGallery); // delete user's profile gallery
-router.delete('/:id/occasions/:itemId', deleteProfileOccasion); // delete user's profile occasions
-// router.delete('/:id/projects', deleteProfileProjectValidator, deleteProfileProject); // delete user's profile projects
+router.delete('/:id/gallery/:galleryId', deleteProfileGallery); // delete user's profile gallery
+router.delete('/:id/occasions/:occasionId', deleteProfileOccasion); // delete user's profile occasions
+router.delete('/:id/projects/:projectId', deleteProfileProject); // delete user's profile projects
 
 module.exports = router;  

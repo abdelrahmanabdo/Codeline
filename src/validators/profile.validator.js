@@ -23,6 +23,9 @@ module.exports = {
    * Create profile project validator
    */
   createProfileProjectValidator: [
+    body('title')
+      .notEmpty()
+      .withMessage('Title is required'),
     body('description')
       .notEmpty()
       .withMessage('Description is required'),
