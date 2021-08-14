@@ -22,7 +22,7 @@ router.put('/:id', update); // update user data
 router.delete('/:id', remove); // delete user
 router.put('/:id/pin_code', updatePinCodeValidator, updatePinCode); // Update user's pin code
 router.put('/:id/password/update', updatePasswordValidator, updatePassword); // Update user's password
-router.post('/:id/password/reset', updatePasswordValidator, resetPassword); // Update user's password
+router.post('/:id/password/reset', resetPassword); // Update user's password
 router.get('', getUsers); // get users list
 
 module.exports = router;
