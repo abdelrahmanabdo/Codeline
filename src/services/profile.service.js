@@ -1,5 +1,6 @@
 const db = require('../utils/db');
-var upload = require('../helpers/upload');
+const upload = require('../helpers/upload');
+const uuid = require('uuid');
 
 module.exports = {
 
@@ -187,7 +188,7 @@ module.exports = {
     if (data.image) {
       const storedImage = await upload(
           data.image,
-          data.title ? data.title.replace(/\s+/g, '').trim() : Math.random(),
+          uuid.v4(),
           `galleries/${userId}`
         );
       data.image = storedImage;
@@ -234,7 +235,7 @@ module.exports = {
     if (data.image) {
       const storedImage = await upload(
         data.image, 
-        data.title.replace(/\s+/g, '').trim(),
+        uuid.v4(),
         `projects/${userId}`
       );
       data.image = storedImage;

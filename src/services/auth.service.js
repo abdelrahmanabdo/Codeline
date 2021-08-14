@@ -1,6 +1,7 @@
 const db = require('../utils/db');
-var bcrypt = require('bcrypt');
-var upload = require('../helpers/upload');
+const bcrypt = require('bcrypt');
+const upload = require('../helpers/upload');
+const uuid = require('uuid');
 
 module.exports = {
 
@@ -19,7 +20,11 @@ module.exports = {
 
       // In case user add avatar
       if (body.avatar) {
-        const storedAvatar = await upload(body.avatar, body.name.replace(/\s+/g, '').trim(), `users`);
+        const storedAvatar = await upload(
+          body.avatar, 
+          uuid.v4(),
+          `users`
+        );
         body.avatar = storedAvatar || null;
       }
 
