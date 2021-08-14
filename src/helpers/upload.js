@@ -8,7 +8,7 @@ module.exports = async function(data, fileName, folderName) {
   var decodedImg = await decodeBase64Image(data);
   var imageBuffer = decodedImg.data;
   var type = decodedImg.type;
-  var extension = mime.extension(type);
+  // var extension = mime.extension(type);
 
   try {
     let path = `storage/images/${folderName}`;

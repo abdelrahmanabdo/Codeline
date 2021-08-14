@@ -35,7 +35,11 @@ app.use('/api/v1/users', authMiddleware, userRoutes);
 app.use('/api/v1/profile', authMiddleware,profileRoutes);
 
 // Swagger
-app.use('/api/doc', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc(swaggerOptions)));
+app.use(
+  '/api/doc', 
+  swaggerUi.serve, 
+  swaggerUi.setup(swaggerJsDoc(swaggerOptions))
+);
 
 // Start the server
 const port = process.env.PORT || 3030;
