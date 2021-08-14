@@ -22,7 +22,7 @@ module.exports = {
       if (body.avatar) {
         const storedAvatar = await upload(
           body.avatar, 
-          uuid.v4(),
+          uuid.v4(), 
           `users`
         );
         body.avatar = storedAvatar || null;
@@ -64,13 +64,28 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const {phone} = body;
       db.query(
-        `SELECT id, phone, name, email, avatar, is_online, last_online, is_active FROM users WHERE phone LIKE '%${phone}'`,
+        `SELECT 
+          id, 
+          phone, 
+          name, 
+          email, 
+          password, 
+          avatar, 
+          is_online, 
+          last_online, 
+          is_active,
+          created_at
+          FROM users 
+          WHERE phone LIKE '${phone}'`,
         (error, results) => {
           if (error) return reject(error)
           if (results.length === 0) return reject('No User Found!');
 
           comparePassword(body.password, results[0].password, (err, isPasswordMatch) => {
-            if (isPasswordMatch) resolve(results[0]);
+            if (isPasswordMatch) {
+              delete results[0].password;
+              resolve(results[0]);
+            }
             else reject('Wrong User Password');
           }); 
         }
