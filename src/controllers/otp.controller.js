@@ -6,6 +6,24 @@ const userService = require('../services/user.service');
 module.exports = {
 
   /**
+   * Create non-registered user OTP code
+   * 
+   * @param {String} phone
+   */
+  createNonRegisteredUserOTP: async (phone) => {
+    const newOTP = await generateNewOTP(1000);
+    return await otpService.createNonRegisteredUserOTP(newOTP)
+      .then(async (code) => {
+        // Send user sms message
+        await twilioHandler(phone, 'Your OTP Code is ' + code);
+        return code;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+
+  /**
    * Create new user OTP code
    * 
    * @param {Number} userId
@@ -13,11 +31,11 @@ module.exports = {
    */
   createUserOTP:  async (userId, userPhone) => {
     const newOTP = await generateNewOTP(userId);
-    otpService.createUserNewOTP(userId, newOTP)
-      .then((code) => {
+    return await otpService.createUserNewOTP(userId, newOTP)
+      .then(async (code) => {
         // Send user sms message
-        twilioHandler(userPhone, 'Your OTP Code is ' + newOTP);
-        return newOTP;
+        await twilioHandler(userPhone, 'Your OTP Code is ' + code);
+        return code;
       })
       .catch((err) => {
         return err;
@@ -39,12 +57,12 @@ module.exports = {
     }
 
     const {user_id} = req.body;
-
+    // Generate new otp
     const newOTP = await generateNewOTP(user_id);
     // Get user's phone number
     const userPhone = await userService.getUserPhone(user_id);
 
-    otpService.createUserNewOTP(user_id, newOTP)
+    await otpService.createUserNewOTP(user_id, newOTP)
       .then(async (code) => {
         // Send user sms message
         await twilioHandler(userPhone, 'Your OTP Code is ' + newOTP);

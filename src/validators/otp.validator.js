@@ -5,9 +5,9 @@ module.exports = {
    * Verify OTP validator
    */
   verifyValidator: [
-    body('user_id')
-      .notEmpty()
-      .withMessage('User id is required'),
+    // body('user_id')
+    //   .notEmpty()
+    //   .withMessage('User id is required'),
     body('otp')
       .notEmpty()
       .withMessage('Otp is required')

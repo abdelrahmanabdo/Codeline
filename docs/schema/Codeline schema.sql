@@ -19,6 +19,7 @@ CREATE TABLE `OTPs` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
   `otp_code` varchar(255),
+  `verified` boolean DEFAULT false,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 

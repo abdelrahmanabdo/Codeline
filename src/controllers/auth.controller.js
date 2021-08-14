@@ -1,5 +1,6 @@
 const authService = require('../services/auth.service');
 const userService = require('../services/user.service');
+const otpController = require('./otp.controller');
 const { createUserOTP } = require('../controllers/otp.controller');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
@@ -7,6 +8,30 @@ const bcrypt = require('bcryptjs');
 const config = require('../config/constants');
 
 module.exports = {
+
+  /**
+   * Create new account
+   * 
+   * @returns {Object}
+   * @public
+   */
+  verifyPhoneNumber: async(req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    const otp = await otpController
+      .createNonRegisteredUserOTP(req.body.phone);
+
+    res.send({
+      success: true,
+      otp
+    });
+  },
 
   /**
    * Create new account
@@ -105,7 +130,9 @@ module.exports = {
  * @private
  */
 createUserToken = (userId) => {
-  return jwt.sign({ id: userId }, config.jwtSecret, {
-            expiresIn: 86400922
-         });
+  return jwt.sign(
+            { id: userId },
+            config.jwtSecret,
+            { expiresIn: 86400922 }
+         );
 }
