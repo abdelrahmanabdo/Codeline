@@ -252,8 +252,8 @@ module.exports = {
       });
     }
 
-    const isUser = await userService.fetchUserById(req.params.id);
-    if (isUser) {
+    // const isUser = await userService.fetchUserById(req.params.id);
+    // if (isUser) {
       // Update data
       await profileService
         .insertNewGalleryRow(req.params.id, req.body)
@@ -269,12 +269,12 @@ module.exports = {
             message: err.sqlMessage
           });
         });
-    } else {
-       return res.status(400).send({
-         success: false,
-         message: 'No User Found With This Id!'
-       });
-    }
+    // } else {
+    //    return res.status(400).send({
+    //      success: false,
+    //      message: 'No User Found With This Id!'
+    //    });
+    // }
 
   },
 
@@ -294,8 +294,8 @@ module.exports = {
     }
 
     // Fetch user data if exists
-    const user = await userService.fetchUserById(req.params.id);
-    if (user) {
+    // const user = await userService.fetchUserById(req.params.id);
+    // if (user) {
       // Update data
       await profileService
         .insertNewOccasionRow(req.params.id, req.body)
@@ -311,12 +311,12 @@ module.exports = {
             message: err.sqlMessage
           });
         });
-    } else {
-      return res.status(404).send({
-        success: false,
-        message: 'No User Found With This Id!'
-      });
-    }
+    // } else {
+    //   return res.status(404).send({
+    //     success: false,
+    //     message: 'No User Found With This Id!'
+    //   });
+    // }
   },
 
   /**
@@ -334,8 +334,8 @@ module.exports = {
       });
     }
     // Fetch user if exists.
-    const user = await userService.fetchUserById(req.params.id);
-    if (user) {
+    // const user = await userService.fetchUserById(req.params.id);
+    // if (user) {
       // Update data
       await profileService
         .insertNewProjectRow(req.params.id, req.body)
@@ -351,12 +351,12 @@ module.exports = {
             message: err.sqlMessage
           });
         });
-    } else {
-      return res.status(404).send({
-        success: false,
-        message: 'No User Found With This Id!'
-      });
-    }
+    // } else {
+    //   return res.status(404).send({
+    //     success: false,
+    //     message: 'No User Found With This Id!'
+    //   });
+    // }
   },
 
 
