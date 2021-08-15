@@ -224,7 +224,9 @@ module.exports = {
     .then(() => {
       return res.status(200).send({
         success: true,
-        message: `profile information is ${hasProfile ? 'updated' : 'inserted'} successfully!`
+        message: `profile information is ${hasProfile 
+          ? 'updated' 
+          : 'inserted'} successfully!`
       });
     })
     .catch((err) => {
@@ -293,6 +295,7 @@ module.exports = {
 
     // Fetch user data if exists
     const user = await userService.fetchUserById(req.params.id);
+    return user;
     if (user) {
       // Update data
       await profileService
