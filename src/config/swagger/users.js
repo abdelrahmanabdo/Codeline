@@ -123,18 +123,11 @@
 
 /**
  * @swagger
- *  /users/{id}/password/reset:
+ *  /users/password/reset:
  *  post:
  *    summary: Reset user's password.
  *    tags: ['Users']
  *    description: Reset user's password
- *    parameters:
- *     - in: path
- *       name: id
- *       schema:
- *        type: number
- *       required: true
- *       description: The user's id
  *    requestBody:
  *     required: true
  *     content:

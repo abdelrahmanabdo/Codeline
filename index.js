@@ -15,6 +15,7 @@ const userRoutes = require('./src/routes/user.routes');
 const profileRoutes = require('./src/routes/profile.routes');
 const otpRoutes = require('./src/routes/otp.routes');
 const lookupsRoutes = require('./src/routes/lookups.routes');
+const { resetPassword } = require('./src/controllers/user.controller');
 
 // Auth middleware
 const authMiddleware = require('./src/middlewares/auth.middleware');
@@ -33,6 +34,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/otp', otpRoutes);
 app.use('/api/v1/users', authMiddleware, userRoutes);
 app.use('/api/v1/profile', authMiddleware,profileRoutes);
+app.use('/api/v1/users/password/reset', resetPassword); // Update user's password
 
 // Swagger
 app.use(

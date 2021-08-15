@@ -162,14 +162,7 @@ module.exports = {
    * @private
    */
   resetPassword: (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({
-        success: false,
-        errors: errors.array()
-      });
-    }
-
+    // fetch user
     const user = userService.fetchUserByEmail(req.body.email);
 
     if (!user) {
@@ -179,7 +172,8 @@ module.exports = {
       })
     }
 
-    userService.resetUserPassword(req.params.id)
+    userService
+      .resetUserPassword(req.params.id)
       .then(() => {
         return res.status(200).send({
           success: true,
