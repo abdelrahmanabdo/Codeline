@@ -141,7 +141,8 @@ module.exports = {
       });
     }
 
-    userService.updateUserPassword(req.params.id, req.body.password)
+    userService
+      .updateUserPassword(req.params.id, req.body.password)
       .then(() => {
         return res.status(200).send({
           success: true,
@@ -164,7 +165,6 @@ module.exports = {
   resetPassword: (req, res, next) => {
     // fetch user
     const user = userService.fetchUserByEmail(req.body.email);
-
     if (!user) {
       return res.status(404).send({
         success: false,

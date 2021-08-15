@@ -9,8 +9,8 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  getUserProfile: (req, res) => {
-    profileService.fetchUserProfile(req.params.id)
+  getUserProfile: async (req, res) => {
+    await profileService.fetchUserProfile(req.params.id)
       .then((result) => {
         const profile = {};
         profile.information = result[0][0];
@@ -37,8 +37,9 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  getProfileInformation: (req, res) => {
-    profileService.fetchProfileInformation(req.params.id)
+  getProfileInformation:async (req, res) => {
+    await profileService
+      .fetchProfileInformation(req.params.id)
       .then((result) => {
         res.send({
           success: true,
@@ -60,8 +61,9 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  getProfileGalleries: (req, res) => {
-    profileService.fetchProfileGalleries(req.params.id)
+  getProfileGalleries: async (req, res) => {
+    await profileService
+      .fetchProfileGalleries(req.params.id)
       .then((result) => {
         res.send({
           success: true,
@@ -83,8 +85,9 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  getProfileOccasions: (req, res) => {
-    profileService.fetchProfileOccasions(req.params.id)
+  getProfileOccasions: async (req, res) => {
+    await profileService
+      .fetchProfileOccasions(req.params.id)
       .then((result) => {
         res.send({
           success: true,
@@ -105,8 +108,9 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  getProfileProjects: (req, res) => {
-    profileService.fetchProfileProjects(req.params.id)
+  getProfileProjects: async (req, res) => {
+    await profileService
+      .fetchProfileProjects(req.params.id)
       .then((result) => {
         res.send({
           success: true,
@@ -128,9 +132,10 @@ module.exports = {
     * @returns {Object}
     * @public
     */
-  getSingleGallery: (req, res) => {
+  getSingleGallery: async (req, res) => {
     const {id, galleryId} = req.params;
-    profileService.fetchSingleGallery(id, galleryId)
+    await profileService
+      .fetchSingleGallery(id, galleryId)
       .then((result) => {
         res.send({
           success: true,
@@ -151,9 +156,10 @@ module.exports = {
     * @returns {Object}
     * @public
     */
-  getSingleOccasion: (req, res) => {
+  getSingleOccasion: async (req, res) => {
     const {id, occasionId} = req.params;
-    profileService.fetchSingleOccasion(id, occasionId)
+    await profileService
+      .fetchSingleOccasion(id, occasionId)
       .then((result) => {
         res.send({
           success: true,
@@ -174,9 +180,10 @@ module.exports = {
     * @returns {Object}
     * @public
     */
-  getSingleProject: (req, res) => {
+  getSingleProject: async (req, res) => {
     const {id, projectId} = req.params;
-    profileService.fetchSingleProject(id, projectId)
+    await profileService
+      .fetchSingleProject(id, projectId)
       .then((result) => {
         res.send({
           success: true,
@@ -204,15 +211,12 @@ module.exports = {
 
     const data = JSON.parse(JSON.stringify(req.body));
 
-    // If there is avatar in the data
-    if (data.hasOwnProperty('avatar')) {
-
-    }
     // Check if user already has a profile 
     const hasProfile = await profileService.checkUserHasProfile(req.params.id);
 
     // Upsert data
-    profileService.upsertProfileInformation(
+    await profileService
+      .upsertProfileInformation(
       hasProfile ? 'update' : 'insert',
       req.params.id, 
       data
@@ -249,7 +253,8 @@ module.exports = {
     const isUser = await userService.fetchUserById(req.params.id);
     if (isUser) {
       // Update data
-      profileService.insertNewGalleryRow(req.params.id, req.body)
+      await profileService
+        .insertNewGalleryRow(req.params.id, req.body)
         .then(() => {
           return res.status(200).send({
             success: true,
@@ -290,7 +295,8 @@ module.exports = {
     const user = await userService.fetchUserById(req.params.id);
     if (user) {
       // Update data
-      profileService.insertNewOccasionRow(req.params.id, req.body)
+      await profileService
+        .insertNewOccasionRow(req.params.id, req.body)
         .then(() => {
           return res.status(200).send({
             success: true,
@@ -325,13 +331,12 @@ module.exports = {
         errors: errors.array()
       });
     }
-    
-    const isUser = await userService.fetchUserById(req.params.id);
-
-    if (isUser) {
-      const data = JSON.parse(JSON.stringify(req.body));
+    // Fetch user if exists.
+    const user = await userService.fetchUserById(req.params.id);
+    if (user) {
       // Update data
-      await profileService.insertNewProjectRow(req.params.id, data)
+      await profileService
+        .insertNewProjectRow(req.params.id, req.body)
         .then(() => {
           return res.status(200).send({
             success: true,
@@ -362,7 +367,8 @@ module.exports = {
   deleteProfileGallery: async (req, res) => {
     const {id, galleryId} = req.params;
     // Delete row
-    profileService.deleteGallery(id, galleryId)
+    profileService
+      .deleteGallery(id, galleryId)
       .then((isDeleted) => {
         return res.status(200).send({
           success: isDeleted,
@@ -388,7 +394,8 @@ module.exports = {
   deleteProfileProject: async (req, res) => {
     const {id, projectId} = req.params;
     // Delete row
-    profileService.deleteProject(id, projectId)
+    await profileService
+      .deleteProject(id, projectId)
       .then((isDeleted) => {
         return res.status(200).send({
           success: isDeleted,
@@ -414,7 +421,8 @@ module.exports = {
   deleteProfileOccasion: async (req, res) => {
     const {id, occasionId} = req.params;
     // Delete row
-    profileService.deleteOccasion(id, occasionId)
+    await profileService
+      .deleteOccasion(id, occasionId)
       .then((isDeleted) => {
         return res.status(200).send({
           success: isDeleted,
@@ -430,5 +438,4 @@ module.exports = {
         });
       });
   },
-
 }
