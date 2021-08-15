@@ -34,7 +34,7 @@ module.exports = {
       message: 'Missing user id'
     });
 
-    userService.fetchSpecificUser(req.params.id)
+    userService.fetchUserById(req.params.id)
       .then((result) => {
         res.send({
           success: true,
@@ -168,6 +168,15 @@ module.exports = {
         success: false,
         errors: errors.array()
       });
+    }
+
+    const user = userService.fetchUserByEmail(req.body.email);
+
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: 'No User Found!'
+      })
     }
 
     userService.resetUserPassword(req.params.id)

@@ -135,6 +135,15 @@
  *        type: number
  *       required: true
  *       description: The user's id
+ *    requestBody:
+ *     required: true
+ *     content:
+ *      application/json:
+ *        schema:
+ *          type: object
+ *          properties:
+ *            email:
+ *              type: string
  *    responses:
  *      '200':
  *        description: A successful response

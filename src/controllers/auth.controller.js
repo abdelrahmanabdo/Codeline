@@ -56,7 +56,7 @@ module.exports = {
         // Create new otp and send sms message to user
         await createUserOTP(userId, req.body.phone);
         // Get user data
-        const user = await userService.fetchSpecificUser(userId);
+        const user = await userService.fetchUserById(userId);
 
         res.send({
           success: true,

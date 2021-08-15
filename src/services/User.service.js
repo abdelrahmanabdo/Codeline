@@ -22,15 +22,16 @@ module.exports = {
   },
 
   /**
-   * Fetch current user.
+   * Fetch specific user by id.
    * 
-   * @returns {Array}
+   * @returns {Object}
    * @public
    */
-  fetchUser: () => {
+  fetchUserById: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        'select * from users limit 1',
+        'select * from users where id = ?',
+        [id],
         (error, results) => {
           if (error) return reject(error);
           resolve(results.length > 0 ? results[0] : null);
@@ -40,16 +41,16 @@ module.exports = {
   },
 
   /**
-   * Fetch specific user.
+   * Fetch specific user by email.
    * 
    * @returns {Object}
    * @public
    */
-  fetchSpecificUser: (id) => {
+  fetchUserByEmail: (email) => {
     return new Promise((resolve, reject) => {
       db.query(
-        'select * from users where id = ?',
-        [id],
+        'select * from users where email = ?',
+        [email],
         (error, results) => {
           if (error) return reject(error);
           resolve(results.length > 0 ? results[0] : null);

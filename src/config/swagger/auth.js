@@ -30,6 +30,32 @@
 
 /**
  * @swagger
+ *  /auth/verify:
+ *  post:
+ *    summary: Verify Phone number.
+ *    tags: ['Auth']
+ *    description:  Verify non-registered user phone number
+ *    requestBody:
+ *     required: true
+ *     content:
+ *      application/json:
+ *        schema:
+ *          type: object
+ *          properties:
+ *            phone:
+ *              type: string
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '422':
+ *         description: Missing params
+ *      '500':
+ *         description: Internal Server error ( Contact The developer)
+ */
+
+
+/**
+ * @swagger
  *  /auth/create_account:
  *  post:
  *    summary: Create a new user account.

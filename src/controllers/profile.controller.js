@@ -246,7 +246,7 @@ module.exports = {
       });
     }
 
-    const isUser = await userService.fetchSpecificUser(req.params.id);
+    const isUser = await userService.fetchUserById(req.params.id);
     if (isUser) {
       // Update data
       profileService.insertNewGalleryRow(req.params.id, req.body)
@@ -286,7 +286,7 @@ module.exports = {
       });
     }
 
-    const isUser = await userService.fetchSpecificUser(req.params.id);
+    const isUser = await userService.fetchUserById(req.params.id);
     if (isUser) {
       // Update data
       profileService.insertNewOccasionRow(req.params.id, req.body)
@@ -325,7 +325,7 @@ module.exports = {
       });
     }
     
-    const isUser = await userService.fetchSpecificUser(req.params.id);
+    const isUser = await userService.fetchUserById(req.params.id);
 
     if (isUser) {
       const data = JSON.parse(JSON.stringify(req.body));
