@@ -295,7 +295,6 @@ module.exports = {
 
     // Fetch user data if exists
     const user = await userService.fetchUserById(req.params.id);
-    return user;
     if (user) {
       // Update data
       await profileService

@@ -26,15 +26,15 @@ app.use(cors());
 app.use(helmet());
 app.use(compression());
 app.use(express.urlencoded({extended: false, limit: '50mb'}));
-app.use(express.static(__dirname + '/public', { maxAge: 31557600 }));
+// app.use(express.static(__dirname + '/public', { maxAge: 31557600 }));
 
 // Routes
 app.use('/api/v1', lookupsRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/otp', otpRoutes);
 app.use('/api/v1/users', authMiddleware, userRoutes);
-app.use('/api/v1/profile', authMiddleware,profileRoutes);
 app.use('/api/v1/users/password/reset', resetPassword); // Update user's password
+app.use('/api/v1/profile', authMiddleware,profileRoutes);
 
 // Swagger
 app.use(
@@ -44,10 +44,10 @@ app.use(
 );
 
 // Start the server
-// const port = process.env.PORT || 3030;
-// http.listen(port, () => {
-//   console.log('Codeline server is running on port', port);
-// });
+const port = process.env.PORT || 3030;
+http.listen(port, () => {
+  console.log('Codeline server is running on port', port);
+});
 
 // Production
-http.listen();
+// http.listen();
