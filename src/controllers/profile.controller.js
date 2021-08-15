@@ -286,8 +286,9 @@ module.exports = {
       });
     }
 
-    const isUser = await userService.fetchUserById(req.params.id);
-    if (isUser) {
+    // Fetch user data if exists
+    const user = await userService.fetchUserById(req.params.id);
+    if (user) {
       // Update data
       profileService.insertNewOccasionRow(req.params.id, req.body)
         .then(() => {
