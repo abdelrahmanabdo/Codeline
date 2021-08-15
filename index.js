@@ -24,9 +24,9 @@ dotenv.config();
 app.use(express.json({limit: '50mb'}));
 app.use(cors());
 app.use(helmet());
-app.use(express.static(__dirname));
+app.use(compression());
 app.use(express.urlencoded({extended: false, limit: '50mb'}));
-app.use('/public', express.static('resources'));
+app.use(express.static(__dirname + '/public', { maxAge: 31557600 }));
 
 // Routes
 app.use('/api/v1', lookupsRoutes);
