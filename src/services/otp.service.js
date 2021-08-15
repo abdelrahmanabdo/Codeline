@@ -10,7 +10,7 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  createUserNewOTP: (userId, otpCode) => {
+  createUserNewOTP: (userId = null, otpCode) => {
     return new Promise(async (resolve, reject) => {
       db.query(
         'INSERT INTO OTPs (user_id, otp_code) VALUES (?, ?) ',

@@ -19,8 +19,5 @@ module.exports = {
    * Resend new user otp validator
    */
   resendValidator: [
-    body('user_id')
-    .notEmpty()
-    .withMessage('User id is required'),
   ],
 }

@@ -56,13 +56,22 @@ module.exports = {
       });
     }
 
-    const {user_id} = req.body;
-    // Generate new otp
-    const newOTP = await generateNewOTP(user_id);
-    // Get user's phone number
-    const userPhone = await userService.getUserPhone(user_id);
+    const {user_id, phone} = req.body;
+    let userPhone = '';
 
-    await otpService.createUserNewOTP(user_id, newOTP)
+    // In case resend code to non-registered user
+    if (phone) {
+      userPhone = phone;
+    } else {
+      // Get user's phone number
+      userPhone = await userService.getUserPhone(user_id);
+    }
+
+     // Generate new otp
+    const newOTP = await generateNewOTP(user_id || 10020);
+
+    await otpService
+      .createUserNewOTP(user_id, newOTP)
       .then(async (code) => {
         // Send user sms message
         await twilioHandler(userPhone, 'Your OTP Code is ' + newOTP);
