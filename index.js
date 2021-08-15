@@ -44,10 +44,10 @@ app.use(
 );
 
 // Start the server
-const port = process.env.PORT || 3030;
-http.listen(port, () => {
-  console.log('Codeline server is running on port', port);
-});
+// const port = process.env.PORT || 3030;
+// http.listen(port, () => {
+//   console.log('Codeline server is running on port', port);
+// });
 
 // Production
-// http.listen();
+http.listen();
