@@ -49,15 +49,6 @@
  *    summary: resend new otp code.
  *    tags: ['OTP']
  *    description: Resend new OTP to user
- *    requestBody:
- *     required: true
- *     content:
- *      application/json:
- *        schema:
- *          type: object
- *          properties:
- *            user_id:
- *              type: number
  *    responses:
  *      '200':
  *        description: A successful response
