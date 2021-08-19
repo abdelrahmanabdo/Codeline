@@ -89,7 +89,7 @@ CREATE TABLE `chats` (
   `deleted_at` timestamp
 );
 
-CREATE TABLE `chats_users` (
+CREATE TABLE `chat_users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `chat_id` int,
   `user_id` int,
@@ -100,9 +100,10 @@ CREATE TABLE `chats_users` (
 CREATE TABLE `messages` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `chat_id` int,
-  `type_id` int,
+  `user_id` int,
+  `type` int,
   `message` text,
-  `seen` boolean,
+  `seen` boolean Default false,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` timestamp
@@ -171,13 +172,6 @@ CREATE TABLE `marital_statuses` (
   `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `message_types` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `type` varchar(255),
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
-);
-
 ALTER TABLE `users` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
 
 ALTER TABLE `OTPs` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
@@ -200,13 +194,13 @@ ALTER TABLE `user_occasions` ADD FOREIGN KEY (`occasion_id`) REFERENCES `occasio
 
 ALTER TABLE `user_settings` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
-ALTER TABLE `chats_users` ADD FOREIGN KEY (`chat_id`) REFERENCES `chats` (`id`);
+ALTER TABLE `chat_users` ADD FOREIGN KEY (`chat_id`) REFERENCES `chats` (`id`);
 
-ALTER TABLE `chats_users` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+ALTER TABLE `chat_users` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `messages` ADD FOREIGN KEY (`chat_id`) REFERENCES `chats` (`id`);
 
-ALTER TABLE `messages` ADD FOREIGN KEY (`type_id`) REFERENCES `message_types` (`id`);
+ALTER TABLE `messages` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `calls_users` ADD FOREIGN KEY (`call_id`) REFERENCES `calls` (`id`);
 

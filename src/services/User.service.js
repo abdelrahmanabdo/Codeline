@@ -33,7 +33,6 @@ module.exports = {
         'select * from users where id = ?',
         [id],
         (error, results) => {
-          console.log(results[0])
           if (error) return reject(error);
           resolve(results.length > 0 ? results[0] : null);
         }
