@@ -9,7 +9,6 @@ const io = require('./socket.js').init(http);
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerOptions = require('./swagger');
-
 const authRoutes = require('./src/routes/auth.routes');
 const userRoutes = require('./src/routes/user.routes');
 const profileRoutes = require('./src/routes/profile.routes');
@@ -38,7 +37,6 @@ app.use('/api/v1/users', authMiddleware, userRoutes);
 app.post('/api/v1/users/password/reset', resetPassword);
 app.use('/api/v1/profile', [authMiddleware], profileRoutes);
 app.use('/api/v1/chats', [authMiddleware], chatRoutes);
-
 
 // Swagger
 app.use(

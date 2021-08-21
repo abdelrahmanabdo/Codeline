@@ -136,12 +136,16 @@ module.exports = {
    */
   resetUserPassword: (email) => {
     return new Promise((resolve, reject) => {
-      cryptPassword('12345678', (err, hashedPassword) => {
+      var randomPassword = Math.random().toString(36).slice(-8);
+      cryptPassword(randomPassword, (err, hashedPassword) => {
         db.query(
           `UPDATE users SET password = '${hashedPassword}' WHERE email = '${email}'`,
           (error, results) => {
             if (error) reject(error);
-            resolve(results);
+            resolve({
+              success: results.affectedRows > 0 ? true : false, 
+              newPassword: randomPassword
+            });
           }
         );
       });

@@ -1,5 +1,6 @@
 const userService = require('../services/user.service');
 const { validationResult } = require('express-validator');
+const sendEmail = require('../utils/email');
 
 module.exports = {
   /**
@@ -178,17 +179,27 @@ module.exports = {
 
     userService
       .resetUserPassword(req.body.email)
-      .then(() => {
-        return res.status(200).send({
-          success: true,
-          message: 'Password is reset successfully!',
-          newPassword: '12345678'
-        });
+      .then(async (data) => {
+        if (data.success) {
+          await sendEmail('reset-password', {
+            to: req.body.email,
+            subject: 'Reset password',
+            userName: user.name,
+            newPassword: data.newPassword,
+          });
+
+          return res.status(200).send({
+            success: true,
+            message: 'Password is reset successfully!',
+            newPassword: data.newPassword
+          });
+        }
       })
-      .catch(() => {
+      .catch((e) => {
         return res.status(500).send({
           success: false,
-          message: 'Something wrong happened!'
+          message: 'Something Went wrong!',
+          error: e.code
         });
       });
   }
