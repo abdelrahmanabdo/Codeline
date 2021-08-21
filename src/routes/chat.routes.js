@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const {
   getUserChats,
+  deleteChat,
   getChatMessages,
   sendNewMessage,
   getChatMembers,
@@ -15,6 +16,7 @@ const {
 
 router.get('/:id', getChats, getUserChats);
 router.get('/:id/messages/:chatId', getChatMessages);
+router.delete('/:id/delete/:chatId', deleteChat);
 router.post('/:id/messages/send', sendMessageValidator, sendNewMessage);
 router.get('/:chatId/members', getChatMembers);
 router.post('/:chatId/members/add', manageChatUsersValidator, addChatUser);

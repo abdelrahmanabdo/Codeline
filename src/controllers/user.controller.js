@@ -162,9 +162,13 @@ module.exports = {
    * 
    * @private
    */
-  resetPassword: (req, res, next) => {
+  resetPassword: async (req, res, next) => {
+    if (!req.body.email) return res.status(422).send({
+      success: false,
+      message: 'Please add the email'
+    });
     // fetch user
-    const user = userService.fetchUserByEmail(req.body.email);
+    const user = await userService.fetchUserByEmail(req.body.email);
     if (!user) {
       return res.status(404).send({
         success: false,
@@ -173,11 +177,12 @@ module.exports = {
     }
 
     userService
-      .resetUserPassword(req.params.id)
+      .resetUserPassword(req.body.email)
       .then(() => {
         return res.status(200).send({
           success: true,
-          message: 'Password is reset successfully!'
+          message: 'Password is reset successfully!',
+          newPassword: '12345678'
         });
       })
       .catch(() => {

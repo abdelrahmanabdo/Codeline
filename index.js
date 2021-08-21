@@ -35,7 +35,7 @@ app.use('/api/v1', lookupsRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/otp', otpRoutes);
 app.use('/api/v1/users', authMiddleware, userRoutes);
-app.use('/api/v1/users/password/reset', resetPassword); // Update user's password
+app.post('/api/v1/users/password/reset', resetPassword);
 app.use('/api/v1/profile', [authMiddleware], profileRoutes);
 app.use('/api/v1/chats', [authMiddleware], chatRoutes);
 

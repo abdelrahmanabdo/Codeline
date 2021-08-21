@@ -134,11 +134,11 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  resetUserPassword: (id) => {
+  resetUserPassword: (email) => {
     return new Promise((resolve, reject) => {
       cryptPassword('12345678', (err, hashedPassword) => {
         db.query(
-          `UPDATE users set password = '${hashedPassword}' where id = ${id}`,
+          `UPDATE users SET password = '${hashedPassword}' WHERE email = '${email}'`,
           (error, results) => {
             if (error) reject(error);
             resolve(results);

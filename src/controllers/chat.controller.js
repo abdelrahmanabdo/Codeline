@@ -190,4 +190,33 @@ module.exports = {
         });
       });
   },
+
+  /**
+   * Remove user from chat members
+   * 
+   */
+  deleteChat: async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    await chatService
+      .deleteUserChat(req.params.chatId, req.body.user_id)
+      .then(() => {
+        return res.status(200).send({
+          success: true,
+          message: 'Chat is deleted successfully'
+        });
+      })
+      .catch((error) => {
+        return res.status(500).send({
+          success: false,
+          message: error
+        });
+      });
+  },
 }
