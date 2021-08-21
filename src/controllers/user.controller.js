@@ -185,14 +185,20 @@ module.exports = {
             to: req.body.email,
             subject: 'Reset password',
             userName: user.name,
-            newPassword: data.newPassword,
+            newPassword: data.res,
           });
 
           return res.status(200).send({
             success: true,
             message: 'Password is reset successfully!',
-            newPassword: data.newPassword
+            newPassword: data.res
           });
+        } else {
+          return res.status(500).send({
+            success: false,
+            message: 'Error happened while sending the email',
+            error: data.res
+          });     
         }
       })
       .catch((e) => {
