@@ -196,8 +196,6 @@ module.exports = {
         } else {
           return res.status(500).send({
             success: false,
-            message: 'Error happened while sending the email',
-            error: data.res
           });     
         }
       })

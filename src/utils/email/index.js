@@ -35,9 +35,11 @@ module.exports = async (template, data) => {
     });
 
     console.log("Message sent: %s", email.messageId);
+    return email.messageId;
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
   } catch (e) {
     console.log('Sending email error', e);
+    return e;
   }
 }
 /**

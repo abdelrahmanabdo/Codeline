@@ -141,10 +141,10 @@ module.exports = {
         db.query(
           `UPDATE users SET password = '${hashedPassword}' WHERE email = '${email}'`,
           (error, results) => {
-            if (error) reject(error);
+            if (error) return reject(error);
             resolve({
               success: results.affectedRows > 0 ? true : false, 
-              res: results.affectedRows > 0 ? randomPassword : error
+              res: randomPassword 
             });
           }
         );
