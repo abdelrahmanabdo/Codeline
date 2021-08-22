@@ -3,8 +3,8 @@ const { join } = require('path');
 
 module.exports = async (template, data) => {
   const {
-    from = 'noreply@codeline.com',
-    to = 'noreply@codeline.com',
+    from = 'noreply@codeline.social',
+    to = 'noreply@codeline.social',
     subject = `You've got an email!`,
     attachments = []
   } = data;
