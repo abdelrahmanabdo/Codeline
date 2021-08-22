@@ -12,7 +12,8 @@ module.exports = {
   fetchUsersList: () => {
     return new Promise((resolve, reject) => {
       db.query(
-        'select * from users',
+        `SELECT id, name, email, phone, avatar, is_active, is_online, created_at
+         FROM users`,
         (error, results) => {
           if (error) return reject(error);
           resolve(results);
@@ -30,7 +31,9 @@ module.exports = {
   fetchUserById: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        'select * from users where id = ?',
+        `SELECT id, name, email, phone, avatar, is_active, is_online, created_at
+         FROM users
+         WHERE id = ?`,
         [id],
         (error, results) => {
           if (error) return reject(error);
@@ -49,7 +52,9 @@ module.exports = {
   fetchUserByEmail: (email) => {
     return new Promise((resolve, reject) => {
       db.query(
-        'select * from users where email = ?',
+         `SELECT id, name, email, phone, avatar, is_active, is_online, created_at
+          FROM users
+          WHERE email = ?`,
         [email],
         (error, results) => {
           if (error) return reject(error);
@@ -68,7 +73,6 @@ module.exports = {
    */
   updateUser: (id, data) => {
     let updateQuery = '';
-    const updatableCols = ['name', 'email', 'avatar'];
     // Filter data and allow only 3 updatable columns.
     Object.keys(data)
       .forEach((key, index) => {
@@ -78,7 +82,7 @@ module.exports = {
 
     return new Promise((resolve, reject) => {
       db.query(
-        `UPDATE users set ${updateQuery} where id = ${id}`,
+        `UPDATE users SET ${updateQuery} WHERE id = ${id}`,
         (error, results) => {
           if (error) return reject(error);
           return resolve(results);
@@ -99,7 +103,7 @@ module.exports = {
   updateUserPinCode: (id, pin_code) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `UPDATE users set pin_code = '${pin_code}' where id = ${id}`,
+        `UPDATE users SET pin_code = '${pin_code}' WHERE id = ${id}`,
         (error, results) => {
           if (error) reject(error);
           resolve(results);
@@ -118,7 +122,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       cryptPassword(password, (err, hashedPassword) => {
         db.query(
-          `UPDATE users set password = '${hashedPassword}' where id = ${id}`,
+          `UPDATE users SET password = '${hashedPassword}' WHERE id = ${id}`,
           (error, results) => {
             if (error) reject(error);
             resolve(results);
@@ -144,7 +148,6 @@ module.exports = {
             if (error) return reject(error);
             resolve({
               success: results.affectedRows > 0 ? true : false, 
-              res: randomPassword 
             });
           }
         );
