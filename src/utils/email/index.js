@@ -3,9 +3,10 @@ const { join } = require('path');
 
 module.exports = async (template, data) => {
   const {
-    from = 'noreply@bodecanada.com',
-    to = 'noreply@bodecanada.com',
+    from = 'noreply@codeline.com',
+    to = 'noreply@codeline.com',
     subject = `You've got an email!`,
+    attachments = []
   } = data;
 
   // Load template
@@ -16,29 +17,23 @@ module.exports = async (template, data) => {
   // let testAccount = await nodemailer.createTestAccount();
   try {
     // create reusable transporter object using the default SMTP transport
-    // let transporter = nodemailer.createTransport({
-    //   host: "smtp.gmail.com",
-    //   port: 587,
-    //   secure: false, // true for 465, false for other ports
-    //   auth: {
-    //     user: 'app.codeline@gmail.com', // generated ethereal user
-    //     pass: 'Kimo663752', // generated ethereal password
-    //   },
-    // });
     let transporter = nodemailer.createTransport({
-      service: 'Gmail',
+      host: "mail.codeline.social",
+      port: 465,
+      secure: true, // true for 465, false for other ports
       auth: {
-        user: 'app.codeline@gmail.com',
-        pass: 'Kimo663752'
-      }
+        user: '_mainaccount@codeline.social',
+        pass: '29p3x1qUlF',
+      },
     });
-
+    
     // send mail with defined transport object
     let email = await transporter.sendMail({
       from,
       to,
       subject,
       html,
+      attachments
     });
 
     console.log("Message sent: %s", email.messageId);
