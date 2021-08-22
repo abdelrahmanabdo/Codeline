@@ -23,7 +23,7 @@ module.exports = {
   },
 
   /**
-   * Fetch specific user by id.
+   * Fetch specific user by id
    * 
    * @returns {Object}
    * @public
