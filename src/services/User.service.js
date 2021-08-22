@@ -147,7 +147,8 @@ module.exports = {
           (error, results) => {
             if (error) return reject(error);
             resolve({
-              success: results.affectedRows > 0 ? true : false, 
+              success: results.affectedRows > 0 ? true : false,
+              newPassword: randomPassword
             });
           }
         );

@@ -185,7 +185,7 @@ module.exports = {
             to: req.body.email,
             subject: 'Reset password',
             userName: user.name,
-            newPassword: data.res
+            newPassword: data.newPassword
           });
 
           return res.status(200).send({
