@@ -90,7 +90,7 @@
 /**
  * @swagger
  *  /users/{id}/password/update:
- *  post:
+ *  put:
  *    summary: Update user's password.
  *    tags: ['Users']
  *    description: Update user's password
