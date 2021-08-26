@@ -37,6 +37,41 @@
 
 /**
  * @swagger
+ *  /chats/{id}/search:
+ *  get:
+ *    summary: Search in user's chats.
+ *    tags: ['Chat']
+ *    description: Search in user's chats.
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The user's id
+ *    requestBody:
+ *     required: true
+ *     content:
+ *      application/json:
+ *        schema:
+ *          type: object
+ *          properties:
+ *            query:
+ *              type: string
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '422':
+ *         description: Missing params
+ *      '404':
+ *         description: The user is not found
+ *      '500':
+ *         description: Internal Server error ( Contact The developer)
+ */
+
+
+/**
+ * @swagger
  *  /chats/{id}/messages/{chat_id}:
  *  get:
  *    summary: Get chat messages.

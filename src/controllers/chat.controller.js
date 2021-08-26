@@ -34,6 +34,37 @@ module.exports = {
       });
   },
 
+
+  /**
+   * Search in user's chats list
+   * 
+   */
+  searchInUserChats: async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    // Fetch user chats
+    await chatService
+      .searchInChats(req.params.id, req.body.query)
+      .then((data) => {
+        return res.status(200).send({
+          success: true,
+          data
+        })
+      })
+      .catch((error) => {
+        return res.status(500).send({
+          success: false,
+          message: error
+        });
+      });
+  },
+
   /**
    * Get user chats list
    * 

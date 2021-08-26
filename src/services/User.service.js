@@ -64,6 +64,28 @@ module.exports = {
     });
   },
 
+ /**
+   * Fetch specific user by phone.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  fetchUserByPhone: (phone) => {
+    return new Promise((resolve, reject) => {
+      phone = phone.startsWith('+') ? phone : `%${phone}`;
+      db.query(
+         `SELECT id, name, email, phone, avatar, is_active, is_online, created_at
+          FROM users
+          WHERE phone LIKE ?`,
+        [phone],
+        (error, results) => {
+          if (error) return reject(error);
+          resolve(results.length > 0 ? results[0] : null);
+        }
+      );
+    });
+  },
+
   /**
    * Update user data.
    * Change name, email and avatar columns values only.

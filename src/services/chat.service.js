@@ -41,6 +41,44 @@ module.exports = {
     });
   },
 
+
+  /**
+   * fetch user chats list
+   */
+  searchInChats: function (userId, query) {
+    return new Promise(async (resolve, reject) => {
+      await db.query(
+        `SELECT 
+          c.id,
+          c.type,
+          c.name,
+          m.message last_message,
+          count(m.seen) not_seen,
+          m.created_at
+         FROM chats c
+         JOIN chat_users cu
+         ON c.id = cu.chat_id
+         LEFT JOIN messages m
+         ON m.chat_id = c.id
+         WHERE cu.user_id = ${userId}
+         AND c.name LIKE '%${query}%'
+         GROUP BY cu.chat_id
+         ORDER BY m.created_at DESC
+         `,
+        async (error, chats) => {
+          if (error) return reject(error);
+          if (chats.length > 0) {
+            for (var i = 0; i < chats.length; i++) {
+              const users = await this.fetchChatMembers(chats[i].id);
+              chats[i]['users'] = users;
+            };
+          }
+          return resolve(chats);
+        }
+      );
+    });
+  },
+
   /**
    * fetch user chat messages
    */
@@ -84,27 +122,31 @@ module.exports = {
       } = data;
 
       if (message_type === 'File' || message_type === 'Image') {
-        message = '';
+        const storedAvatar = await upload(
+          message, 
+          uuid.v4(), 
+          `chats/${id}`
+        );
+        message = storedAvatar || null;
       }
 
       // If there is a chat already
       if (chat_id) {
         await db.query(
           `INSERT INTO messages (chat_id, user_id, message, type)
-           VALUES (${chat_id}, ${id}, '${message}', '${message_type || 'Text'}')`
-          ,
+           VALUES (${chat_id}, ${id}, '${message}', '${message_type || 'Text'}')`,
           async (error, results) => {
             if (error) return reject(error);
             resolve(results.affectedRows == 1 ? true : false);
           }
         );
       } else {
-        // Parse to param
-        to = JSON.parse(to);
+        // Add current user id to list of chat users
+        to.push(id);
         // Create chat name
         const chatName = chat_name || await createChatName(to);
         // Create new chat 
-        const newChatId = await createNewChat(to.length > 1 ? 'Group' : 'Single', chatName);
+        const newChatId = await createNewChat(to.length > 2 ? 'Group' : 'Single', chatName);
         // Add chat's users
         await addChatUsers(newChatId, to);
         // Insert the new message

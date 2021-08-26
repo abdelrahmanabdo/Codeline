@@ -10,8 +10,14 @@ module.exports = {
     .notEmpty()
     .withMessage('User id is required')
   ],
-
-
+  /**
+   * Search in user's chats
+   */
+  searchInChatsValidator: [
+    body('query')
+      .notEmpty()
+      .withMessage('Search query is required'),
+  ],
   /**
    * Send message validator
    */

@@ -80,6 +80,16 @@ CREATE TABLE `user_settings` (
   `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE `contacts` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `user_id` int,
+  `contact_id` int,
+  `contact_name` varchar(255),
+  `is_blocked` boolean Default false,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+);
+
 CREATE TABLE `chats` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `type` varchar(255),
@@ -197,6 +207,10 @@ ALTER TABLE `user_settings` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`
 ALTER TABLE `chat_users` ADD FOREIGN KEY (`chat_id`) REFERENCES `chats` (`id`);
 
 ALTER TABLE `chat_users` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+ALTER TABLE `contacts` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+ALTER TABLE `contacts` ADD FOREIGN KEY (`contact_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `messages` ADD FOREIGN KEY (`chat_id`) REFERENCES `chats` (`id`);
 

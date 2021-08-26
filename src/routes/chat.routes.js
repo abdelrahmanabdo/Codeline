@@ -6,15 +6,18 @@ const {
   sendNewMessage,
   getChatMembers,
   addChatUser,
-  removeChatUser
+  removeChatUser,
+  searchInUserChats
 } = require('../controllers/chat.controller');
 const { 
   getChats, 
   sendMessageValidator,
-  manageChatUsersValidator
+  manageChatUsersValidator,
+  searchInChatsValidator
 } = require('../validators/chat.validator');
 
 router.get('/:id', getChats, getUserChats);
+router.post('/:id/search', searchInChatsValidator, searchInUserChats);
 router.get('/:id/messages/:chatId', getChatMessages);
 router.delete('/:id/delete/:chatId', deleteChat);
 router.post('/:id/messages/send', sendMessageValidator, sendNewMessage);
