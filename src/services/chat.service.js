@@ -16,7 +16,7 @@ module.exports = {
           c.type,
           c.name,
           m.message last_message,
-          count(m.seen) not_seen,
+          SUM(CASE WHEN m.seen = 0 THEN 1 ELSE 0 END) not_seen,
           m.created_at
          FROM chats c
          JOIN chat_users cu
@@ -53,7 +53,7 @@ module.exports = {
           c.type,
           c.name,
           m.message last_message,
-          count(m.seen) not_seen,
+          SUM(CASE WHEN m.seen = 0 THEN 1 ELSE 0 END) not_seen,
           m.created_at
          FROM chats c
          JOIN chat_users cu
@@ -101,7 +101,10 @@ module.exports = {
          WHERE m.chat_id = ${chatId}`,
         async (error, results) => {
           if (error) return reject(error);
-          resolve(results);
+          // If there are messages in this chat
+          // Mark chat messages as seen
+          if (results && results.length > 0) await markMessagesSeen(chatId);
+          return resolve(results);
         }
       );
     });
@@ -263,6 +266,18 @@ const addChatUsers = async (chatId, users = []) => {
   return await db.query(
     `INSERT INTO chat_users (chat_id, user_id)
      VALUES ${values}`,
+    async (error, results) => {
+      if (error) return error;
+      return results.affectedRows > 0 ? true : false;
+    }
+  );
+}
+
+// Mark all chat messages as seen
+const markMessagesSeen = async (chatId) => {
+  return await db.query(
+    `UPDATE messages SET seen = 1
+     WHERE chat_id = ${chatId}`,
     async (error, results) => {
       if (error) return error;
       return results.affectedRows > 0 ? true : false;

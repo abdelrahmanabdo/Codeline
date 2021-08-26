@@ -122,7 +122,7 @@ module.exports = {
         return res.status(200).send({
           success: true,
           message: isAdded 
-            ? 'Message added successfully' 
+            ? 'Message Sent successfully' 
             : 'Wrong Chat Id'
         })
       })
