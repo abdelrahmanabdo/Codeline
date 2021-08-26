@@ -78,10 +78,10 @@ module.exports = {
       });
     }
 
-    const {chatId} = req.params;
+    const {chatId, userId} = req.params;
     // Fetch messages
     await chatService
-      .fetchChatMessages(chatId)
+      .fetchChatMessages(chatId, userId)
       .then((data) => {
         return res.status(200).send({
           success: true,

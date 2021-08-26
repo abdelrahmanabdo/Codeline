@@ -82,7 +82,7 @@ module.exports = {
   /**
    * fetch user chat messages
    */
-  fetchChatMessages: async (chatId) => {
+  fetchChatMessages: async (chatId, userId) => {
     return new Promise((resolve, reject) => {
       db.query(
         `SELECT 
@@ -103,7 +103,7 @@ module.exports = {
           if (error) return reject(error);
           // If there are messages in this chat
           // Mark chat messages as seen
-          if (results && results.length > 0) await markMessagesSeen(chatId);
+          if (results && results.length > 0) await markMessagesSeen(chatId, userId);
           return resolve(results);
         }
       );
@@ -274,10 +274,11 @@ const addChatUsers = async (chatId, users = []) => {
 }
 
 // Mark all chat messages as seen
-const markMessagesSeen = async (chatId) => {
+const markMessagesSeen = async (chatId, userId) => {
   return await db.query(
     `UPDATE messages SET seen = 1
-     WHERE chat_id = ${chatId}`,
+     WHERE chat_id = ${chatId}
+     AND user_id <> ${userId}`,
     async (error, results) => {
       if (error) return error;
       return results.affectedRows > 0 ? true : false;
