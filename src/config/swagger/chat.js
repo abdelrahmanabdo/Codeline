@@ -38,7 +38,7 @@
 /**
  * @swagger
  *  /chats/{id}/search:
- *  get:
+ *  post: 
  *    summary: Search in user's chats.
  *    tags: ['Chat']
  *    description: Search in user's chats.
