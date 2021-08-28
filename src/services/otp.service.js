@@ -51,17 +51,18 @@ module.exports = {
   verify: (userId = null, otpCode) => {
     return new Promise(async (resolve, reject) => {
       await db.query(`SELECT * FROM OTPs WHERE otp_code = '${otpCode}'`,
-        (error, results) => {
+        async (error, results) => {
           if (error) return reject(error);
           if (results && results.length > 0) {
-            db.query(`UPDATE OTPs SET verified = true WHERE otp_code = '${otpCode}'`,
+            await db.query(`UPDATE OTPs SET verified = 1 WHERE otp_code = '${otpCode}'`,
               (err, data) => {
                 if (err) return reject(err);
-                resolve(data.affectedRows === 1 ? true : false);
+                resolve(data.affectedRows == 1 ? true : false);
               }
             );
+          } else {
+            resolve(false);
           }
-          resolve(false);
         });
     });
   },
