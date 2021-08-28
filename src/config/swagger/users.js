@@ -123,7 +123,7 @@
 
 /**
  * @swagger
- *  /users/password/reset:
+ *  /password/reset:
  *  post:
  *    summary: Reset user's password.
  *    tags: ['Users']

@@ -43,8 +43,8 @@ app.use(express.urlencoded({
 app.use('/api/v1', lookupsRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/otp', otpRoutes);
+app.post('/api/v1/password/reset', resetPassword);
 app.use('/api/v1/users', authMiddleware, userRoutes);
-app.post('/api/v1/users/password/reset', resetPassword);
 app.use('/api/v1/profile', [authMiddleware], profileRoutes);
 app.use('/api/v1/chats', [authMiddleware], chatRoutes);
 app.use('/api/v1/contacts', [authMiddleware], contactsRoutes);
