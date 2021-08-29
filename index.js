@@ -56,43 +56,25 @@ app.use(
   swaggerUi.setup(swaggerJsDoc(swaggerOptions))
 );
 
+// Socket
+io.on('connection', (socket) => {
+  // Start a new chat channel 
+  socket.on('start_chatting', (chatId) => socket.join(`chat:${chatId}`));
+
+  // socket.on('is_typing', (chat_id, user_id) => {
+  //   socket.to(`chat:${chat_id}`).emit('typing', {
+  //     username: socket.username
+  //   });
+  // });
+  // socket.on('typing_stopped', () => {
+  //   socket.broadcast.emit('typing_stop', {
+  //     username: socket.username
+  //   });
+  // });
+});
+
 // Start the server
 const port = process.env.PORT || 3030;
 http.listen(port, () => {
   console.log('Codeline server is running on port', port);
 });
-
-io.on('connection', (socket) => {
-  console.log('socket', socket)
-  var userJoined = false;
-  socket.on('new_message', (msg) => {
-    console.log('msg', msg)
-    socket.broadcast.emit('new_message', {
-      username: socket.username,
-      message: msg
-    });
-  });
-  socket.on('user_added', (username) => {
-    if (userJoined) return;
-    socket.username = username;
-    userJoined = true;
-    numberOfUsers++;
-    socket.emit('login', {
-      numberOfUsers: numberOfUsers
-    });
-    socket.broadcast.emit('user_joined', {
-      username: socket.username,
-      numberOfUsers: numberOfUsers
-    });
-  });
-  socket.on('typing', () => {
-    socket.broadcast.emit('typing', {
-      username: socket.username
-    });
-  });
-  socket.on('typing_stop', () => {
-    socket.broadcast.emit('typing_stop', {
-      username: socket.username
-    });
-  });
-})

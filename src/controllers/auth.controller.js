@@ -108,7 +108,11 @@ module.exports = {
 
         res.send({
           success: true,
-          user: user,
+          user: {
+            ...user,
+            is_active: true,
+            is_online: true,
+          },
           token
         })
       })

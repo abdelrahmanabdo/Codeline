@@ -125,12 +125,12 @@ module.exports = {
       } = data;
 
       if (message_type === 'File' || message_type === 'Image') {
-        const storedAvatar = await upload(
+        const storedImage = await upload(
           message, 
           uuid.v4(), 
           `chats/${id}`
         );
-        message = storedAvatar || null;
+        message = storedImage || null;
       }
 
       // If there is a chat already
@@ -140,7 +140,11 @@ module.exports = {
            VALUES (${chat_id}, ${id}, '${message}', '${message_type || 'Text'}')`,
           async (error, results) => {
             if (error) return reject(error);
-            resolve(results.affectedRows == 1 ? true : false);
+            resolve({
+              ...data,
+              isAdded: results.affectedRows == 1 
+                ? true : false
+            });
           }
         );
       } else {
@@ -158,7 +162,12 @@ module.exports = {
            VALUES (${newChatId}, ${id}, '${message}', '${message_type || 'Text'}')`,
           async (error, results) => {
             if (error) return reject(error);
-            resolve(results.affectedRows == 1 ? true : false);
+            resolve({
+              ...data,
+              chat_id: newChatId,
+              isAdded: results.affectedRows == 1 
+                ? true : false
+            });
           }
         );
       }

@@ -1,4 +1,5 @@
 const chatService = require('../services/chat.service');
+const userService = require('../services/user.service');
 const { validationResult } = require('express-validator');
 const socket = require('../../socket').getio();
 
@@ -115,13 +116,22 @@ module.exports = {
       ...req.params
     };
 
-    socket.emit('new_message', req.body.message);
     await chatService
       .saveNewMessage(data)
-      .then((isAdded) => {
+      .then(async (data) => {
+        // Get user data 
+        const user = await userService.fetchUserById(data.id);
+
+        // Emit that new message has been sent.
+        socket.to(`chat:${data.chat_id}`)
+          .emit('new_message', {
+            ...data,
+            user
+          });
+
         return res.status(200).send({
           success: true,
-          message: isAdded 
+          message: data.isAdded
             ? 'Message Sent successfully' 
             : 'Wrong Chat Id'
         })
@@ -179,7 +189,13 @@ module.exports = {
 
     await chatService
       .saveChatNewMember(req.params.chatId, req.body.user_id)
-      .then((data) => {
+      .then(async (data) => {
+        // Get user data 
+        const user = await userService.fetchUserById(req.body.user_id);
+        // Emit that new member added to the chat
+        socket.to(`chat:${req.params.chatId}`)
+          .emit('chat_new_member_added', user);
+
         return res.status(200).send({
           success: true,
           message: 'Member is added successfully'
@@ -208,7 +224,13 @@ module.exports = {
 
     await chatService
       .deleteChatMember(req.params.chatId, req.body.user_id)
-      .then((data) => {
+      .then(async (data) => {
+        // Get user data 
+        const user = await userService.fetchUserById(req.body.user_id);
+        // Emit that new member added to the chat
+        socket.to(`chat:${req.params.chatId}`)
+          .emit('chat_member_removed', user);
+
         return res.status(200).send({
           success: true,
           message: 'Member is deleted successfully'
