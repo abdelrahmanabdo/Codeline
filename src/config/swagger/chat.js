@@ -125,16 +125,24 @@
  *          properties:
  *            message*:
  *              type: string
- *            to:
- *              type: string
  *            message_type:
  *              type: string
+ *            to:
+ *              type: array
  *            chat_id:
  *              type: number
  *            chat_name:
  *              type: string
  *            reply_to:
  *              type: number
+ *          example: {
+ *            message: "Hello There",
+ *            message_type: "Text || Image || File",
+ *            chat_id: 40,
+ *            reply_to: 10,
+ *            to: [1,2,3],
+ *            chat_name: "Not mandatory name"
+ *          }
  *    responses:
  *      '200':
  *        description: A successful response
