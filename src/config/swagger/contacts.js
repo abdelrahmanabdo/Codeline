@@ -47,13 +47,22 @@
  *       description: The user's id
  *    requestBody:
  *     required: true
+ *     description: contacts array of objects
  *     content:
  *      application/json:
  *        schema:
  *          type: object
  *          properties:
  *            contacts:
- *              type: object
+ *              type: array
+ *              items: 
+ *               type: object
+ *              example: [
+ *                  {
+ *                      "name": "Abdelrahman salman",
+ *                      "phone": "+201096742196",
+ *                  },
+ *              ]
  *    responses:
  *      '200':
  *        description: A successful response

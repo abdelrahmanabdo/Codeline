@@ -19,7 +19,6 @@ module.exports = {
     }
 
     let {contacts} = req.body;
-      console.log('contacts', contacts)
     if (contacts && contacts.length > 0) {
       await contactsService
         .addNewContacts(req.params.id, contacts)

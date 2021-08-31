@@ -35,11 +35,11 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         for (var i = 0; i < contacts.length; i++) {
-          console.log(typeof contacts[i])
-          let currentContact = typeof contacts[i] === 'object' ?
-            contacts[i] :
-            JSON.parse(contacts[i]);
-          // Check if this user has an account in our platform or not.
+          let currentContact = typeof contacts[i] === 'object'
+            ? contacts[i]
+            : JSON.parse(JSON.stringify(contacts[i]));
+
+            // Check if this user has an account in our platform or not.
           const contact = await userService.fetchUserByPhone(currentContact.phone);
           if (contact) {
             // Check if the contact already in the list of this user.
@@ -109,12 +109,14 @@ const isAlreadyContact = async (userId, contactId) => {
  * @returns {boolean}
  */
 const addContact = async (userId, contactId, contactName) => {
-  return await db.query(
-    `INSERT INTO contacts (user_id, contact_id, contact_nickname)
-     VALUES (${userId}, ${contactId}, ${contactName})`,
-    async (error, results) => {
-      if (error) return error;
-      return results.affectedRows === 1 ? true : false;
-    }
-  );
+  return new Promise(async (resolve, reject) => {
+   await db.query(
+      `INSERT INTO contacts (user_id, contact_id, contact_name)
+       VALUES (${userId}, ${contactId}, '${contactName}')`,
+      async (error, results) => {
+        if (error) return reject(error);
+        return resolve(results.affectedRows === 1 ? true : false);
+      }
+    );
+  })
 }
