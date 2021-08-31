@@ -133,6 +133,76 @@
  *              type: number
  *            chat_name:
  *              type: string
+ *            reply_to:
+ *              type: number
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '422':
+ *         description: Missing params
+ *      '404':
+ *         description: The user is not found
+ *      '500':
+ *         description: Internal Server error ( Contact The developer)
+ */
+
+/**
+ * @swagger
+ *  /chats/{id}/remove/{chatId}:
+ *  delete:
+ *    summary: Delete chat 
+ *    tags: ['Chat']
+ *    description: When user delete chat from his list.
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The user's id
+ *     - in: path
+ *       name: chatId
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The chat's id
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '422':
+ *         description: Missing params
+ *      '404':
+ *         description: The user is not found
+ *      '500':
+ *         description: Internal Server error ( Contact The developer)
+ */
+
+/**
+ * @swagger
+ *  /chats/{id}/messages/{chatId}/remove/{messageId}:
+ *  delete:
+ *    summary: Delete chat message
+ *    tags: ['Chat']
+ *    description: When user delete chat message.
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The user's id
+ *     - in: path
+ *       name: chatId
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The chat's id
+ *     - in: path
+ *       name: messageId
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The chat message's id
  *    responses:
  *      '200':
  *        description: A successful response

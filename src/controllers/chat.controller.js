@@ -79,10 +79,10 @@ module.exports = {
       });
     }
 
-    const {chatId, userId} = req.params;
+    const {chatId, id} = req.params;
     // Fetch messages
     await chatService
-      .fetchChatMessages(chatId, userId)
+      .fetchChatMessages(chatId, id)
       .then((data) => {
         return res.status(200).send({
           success: true,
@@ -245,7 +245,7 @@ module.exports = {
   },
 
   /**
-   * Remove user from chat members
+   *  Delete chat from user chats list
    * 
    */
   deleteChat: async (req, res) => {
@@ -258,11 +258,41 @@ module.exports = {
     }
 
     await chatService
-      .deleteUserChat(req.params.chatId, req.body.user_id)
-      .then(() => {
+      .leftChat(req.params.id, req.params.chatId)
+      .then((isLeft) => {
         return res.status(200).send({
-          success: true,
-          message: 'Chat is deleted successfully'
+          success: isLeft,
+          message: isLeft 
+            ? 'Chat is deleted successfully' 
+            : 'User has already deleted this chat'
+        });
+      })
+      .catch((error) => {
+        return res.status(500).send({
+          success: false,
+          message: error
+        });
+      });
+  },
+
+
+  /**
+   * Deleted message from user's chat
+   * 
+   */
+  deleteChatMessage: async (req, res) => {
+    const {
+      id,
+      chatId,
+      messageId
+    } = req.params;
+
+    await chatService
+      .deleteMessage(id, chatId, messageId)
+      .then((data) => {
+        return res.status(200).send({
+          success: data.status,
+          message: data.message
         });
       })
       .catch((error) => {

@@ -24,6 +24,7 @@ module.exports = {
          LEFT JOIN messages m
          ON m.chat_id = c.id
          WHERE cu.user_id = ${userId}
+         AND cu.is_left = false
          GROUP BY cu.chat_id
          ORDER BY m.created_at DESC
          `,
@@ -93,12 +94,21 @@ module.exports = {
           u.avatar user_avatar,
           m.type,
           m.message,
+          m.reply_to as reply_to_id,
+          r.message as reply_to_message,
           m.seen,
+          CASE true
+          WHEN m.deleted_from LIKE '%"${userId}"%' THEN true
+          ELSE false
+          END as is_deleted,
           m.created_at
          FROM messages m
          JOIN users u
          ON u.id = m.user_id
-         WHERE m.chat_id = ${chatId}`,
+         LEFT JOIN messages r 
+         ON m.reply_to = r.id
+         WHERE m.chat_id = ${chatId}
+         ORDER BY created_at`,
         async (error, results) => {
           if (error) return reject(error);
           // If there are messages in this chat
@@ -121,7 +131,8 @@ module.exports = {
         id,
         to,
         message,
-        message_type
+        message_type,
+        reply_to
       } = data;
 
       if (message_type === 'File' || message_type === 'Image') {
@@ -136,8 +147,8 @@ module.exports = {
       // If there is a chat already
       if (chat_id) {
         await db.query(
-          `INSERT INTO messages (chat_id, user_id, message, type)
-           VALUES (${chat_id}, ${id}, '${message}', '${message_type || 'Text'}')`,
+          `INSERT INTO messages (chat_id, user_id, message, reply_to, type)
+           VALUES (${chat_id}, ${id}, '${message}', ${reply_to || null}, '${message_type || 'Text'}')`,
           async (error, results) => {
             if (error) return reject(error);
             resolve({
@@ -158,8 +169,8 @@ module.exports = {
         await addChatUsers(newChatId, to);
         // Insert the new message
         await db.query(
-          `INSERT INTO messages (chat_id, user_id, message, type)
-           VALUES (${newChatId}, ${id}, '${message}', '${message_type || 'Text'}')`,
+          `INSERT INTO messages (chat_id, user_id, message, reply_to, type)
+           VALUES (${newChatId}, ${id}, '${message}', ${reply_to || null}, '${message_type || 'Text'}')`,
           async (error, results) => {
             if (error) return reject(error);
             resolve({
@@ -189,55 +200,104 @@ module.exports = {
     });
   },
 
-    /**
-     * Save chat new member
-     */
-    saveChatNewMember: async (chatId, userId) => {
-      return new Promise((resolve, reject) => {
+  /**
+    * Save chat new member
+    */
+  saveChatNewMember: async (chatId, userId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `INSERT INTO chat_users 
+        (chat_id, user_id)
+        VALUES (${chatId}, ${userId})`,
+        async (error, results) => {
+          if (error) return reject(error);
+          resolve(results.affectedRows == 1 ? true : false);
+        }
+      );
+    });
+  },
+
+  /**
+   * Remove chat member
+   */
+  deleteChatMember: async (userId, chatId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `DELETE FROM chat_users WHERE
+          chat_id = ${chatId} AND user_id = ${userId}`,
+        async (error, results) => {
+          if (error) return reject(error);
+          resolve(results.affectedRows == 1 ? true : false);
+        }
+      );
+    });
+  },
+
+  /**
+   * Delete chat message
+   */
+  deleteMessage: async (userId, chatId, messageId) => {
+    return new Promise(async (resolve, reject) => {
+      let message = await fetchChatMessage(chatId, messageId);
+      if (message) {
+        let { deleted_from } = message;
+        let deletedFromIds = deleted_from ? JSON.parse(deleted_from) : [];
+        if (deletedFromIds.includes(userId))
+          return resolve({
+            status: false, 
+            message: 'User already deleted this message'
+          });
+        else
+          deletedFromIds.push(userId);
+
+        // Update DB
         db.query(
-          `INSERT INTO chat_users 
-         (chat_id, user_id)
-         VALUES (${chatId}, ${userId})`,
+          `UPDATE messages SET
+            deleted_from = '${JSON.stringify(deletedFromIds)}'
+            WHERE id = ${messageId}`,
           async (error, results) => {
             if (error) return reject(error);
-            resolve(results.affectedRows == 1 ? true : false);
+            return resolve({
+              status: results.affectedRows == 1 ? true : false, 
+              message: 'Message is deleted for this user successfully'
+            });
           }
         );
-      });
-    },
+      } else {
+        return reject('Wrong IDs');
+      }
+    });
+  },
 
-    /**
-     * Remove chat member
-     */
-    deleteChatMember: async (chatId, userId) => {
-      return new Promise((resolve, reject) => {
-        db.query(
-          `DELETE FROM chat_users WHERE
-           chat_id = ${chatId} AND user_id = ${userId}`,
-          async (error, results) => {
-            if (error) return reject(error);
-            resolve(results.affectedRows == 1 ? true : false);
-          }
-        );
-      });
-    },
+  /**
+   * When user delete chat or user left group chat
+   */
+  leftChat: async (userId, chatId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `UPDATE chat_users SET is_left = true 
+         WHERE chat_id = ${chatId} AND user_id = ${userId}`,
+        async (error, results) => {
+          if (error) return reject(error);
+          resolve(results.changedRows == 1 ? true : false);
+        }
+      );
+    });
+  },
+}
 
-
-    /**
-     * When user delete chat or user left group chat
-     */
-    leftChat: async (chatId, userId) => {
-      return new Promise((resolve, reject) => {
-        db.query(
-          `UPDATE chat_users SET left = 1 
-           WHERE  chat_id = ${chatId} AND user_id = ${userId}`,
-          async (error, results) => {
-            if (error) return reject(error);
-            resolve(results.affectedRows == 1 ? true : false);
-          }
-        );
-      });
-    },
+// Fetch chat message.
+const fetchChatMessage = async (chatId, messageId) => {
+  return new Promise(async (resolve, reject) => {
+     await db.query(
+      `SELECT * FROM messages
+       WHERE id = ${messageId} AND chat_id = ${chatId}`,
+      async (error, results) => {
+        if (error) return reject(error);
+        return resolve(results[0]);
+      }
+    );
+  });
 }
 
 // Create chat name.
