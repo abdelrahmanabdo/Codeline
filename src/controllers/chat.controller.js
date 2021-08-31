@@ -121,7 +121,6 @@ module.exports = {
       .then(async (data) => {
         // Get user data 
         const user = await userService.fetchUserById(data.id);
-
         // Emit that new message has been sent.
         socket.to(`chat:${data.chat_id}`)
           .emit('new_message', {
@@ -140,6 +139,69 @@ module.exports = {
         return res.status(500).json({
           success: false,
           errors: error
+        });
+      });
+  },
+
+  /**
+   *  Delete chat from user chats list
+   * 
+   */
+  deleteChat: async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    await chatService
+      .leftChat(req.params.id, req.params.chatId)
+      .then((isLeft) => {
+        return res.status(200).send({
+          success: isLeft,
+          message: isLeft ?
+            'Chat is deleted successfully' :
+            'User has already deleted this chat'
+        });
+      })
+      .catch((error) => {
+        return res.status(500).send({
+          success: false,
+          message: error
+        });
+      });
+  },
+
+
+  /**
+   * Deleted message from user's chat
+   * 
+   */
+  deleteChatMessage: async (req, res) => {
+    const {
+      id,
+      chatId,
+      messageId
+    } = req.params;
+
+    await chatService
+      .deleteMessage(id, chatId, messageId)
+      .then((data) => {
+        // Emit that new message has been deleted.
+        socket.to(`chat:${chatId}`)
+          .emit('message_removed', messageId);
+
+        return res.status(200).send({
+          success: data.status,
+          message: data.message
+        });
+      })
+      .catch((error) => {
+        return res.status(500).send({
+          success: false,
+          message: error
         });
       });
   },
@@ -242,64 +304,5 @@ module.exports = {
           message: error
         });
       });
-  },
-
-  /**
-   *  Delete chat from user chats list
-   * 
-   */
-  deleteChat: async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({
-        success: false,
-        errors: errors.array()
-      });
-    }
-
-    await chatService
-      .leftChat(req.params.id, req.params.chatId)
-      .then((isLeft) => {
-        return res.status(200).send({
-          success: isLeft,
-          message: isLeft 
-            ? 'Chat is deleted successfully' 
-            : 'User has already deleted this chat'
-        });
-      })
-      .catch((error) => {
-        return res.status(500).send({
-          success: false,
-          message: error
-        });
-      });
-  },
-
-
-  /**
-   * Deleted message from user's chat
-   * 
-   */
-  deleteChatMessage: async (req, res) => {
-    const {
-      id,
-      chatId,
-      messageId
-    } = req.params;
-
-    await chatService
-      .deleteMessage(id, chatId, messageId)
-      .then((data) => {
-        return res.status(200).send({
-          success: data.status,
-          message: data.message
-        });
-      })
-      .catch((error) => {
-        return res.status(500).send({
-          success: false,
-          message: error
-        });
-      });
-  },
+  }
 }
