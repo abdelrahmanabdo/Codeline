@@ -22,10 +22,15 @@ module.exports = {
     if (contacts && contacts.length > 0) {
       await contactsService
         .addNewContacts(req.params.id, contacts)
-        .then(() => {
+        .then(async (status) => {
+          let addedContacts = [];
+          if (status)
+            addedContacts = await contactsService.fetchUserContacts(req.params.id);
+
           return res.status(200).send({
             success: true,
-            message: 'Contacts are added successfully'
+            message: 'Contacts are added successfully',
+            data: addedContacts
           })
         })
         .catch((error) => {

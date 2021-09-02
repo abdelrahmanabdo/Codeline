@@ -47,7 +47,6 @@ function reconnect(connection) {
 
 //- Error listener
 connection.on('error', function (err) {
-
   //- The server close the connection.
   if (err.code === "PROTOCOL_CONNECTION_LOST") {
     console.log("/!\\ Cannot establish a connection with the database. /!\\ (" + err.code + ")");
