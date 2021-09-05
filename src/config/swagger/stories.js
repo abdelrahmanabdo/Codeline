@@ -30,7 +30,7 @@
  *          properties:
  *           type:
  *            type: string
- *           story:
+ *           content:
  *            type:  string
  *           caption:
  *            type:  string
@@ -55,7 +55,7 @@
  * @swagger
  *  /stories/{id}:
  *  get:
- *    summary: Get contact stories
+ *    summary: Get user's contacts' stories
  *    tags: ['Stories']
  *    description: Get contact stories.
  *    parameters:
@@ -80,7 +80,7 @@
  * @swagger
  *  /stories/{id}/contact/{contactId}:
  *  get:
- *    summary: Get user contacts' stories
+ *    summary: Get single contact stories
  *    tags: ['Stories']
  *    description: Get list of stories of current user contacts.
  *    parameters:
