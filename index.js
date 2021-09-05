@@ -19,6 +19,7 @@ const otpRoutes = require('./src/routes/otp.routes');
 const lookupsRoutes = require('./src/routes/lookups.routes');
 const chatRoutes = require('./src/routes/chat.routes');
 const contactsRoutes = require('./src/routes/contacts.routes');
+const storiesRoutes = require('./src/routes/stories.routes');
 const {
   resetPassword
 } = require('./src/controllers/user.controller');
@@ -51,6 +52,7 @@ app.use('/api/v1/users', authMiddleware, userRoutes);
 app.use('/api/v1/profile', [authMiddleware], profileRoutes);
 app.use('/api/v1/chats', [authMiddleware], chatRoutes);
 app.use('/api/v1/contacts', [authMiddleware], contactsRoutes);
+app.use('/api/v1/stories', [authMiddleware], storiesRoutes);
 
 // Swagger
 app.use(

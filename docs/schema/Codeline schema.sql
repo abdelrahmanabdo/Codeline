@@ -182,6 +182,17 @@ CREATE TABLE `marital_statuses` (
   `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE `stories` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `user_id` int,
+  `type` varchar(10) Default "Image",
+  `story` varchar(255),
+  `caption` varchar(255),
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+);
+
+
 ALTER TABLE `users` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
 
 ALTER TABLE `OTPs` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
@@ -215,6 +226,8 @@ ALTER TABLE `contacts` ADD FOREIGN KEY (`contact_id`) REFERENCES `users` (`id`);
 ALTER TABLE `messages` ADD FOREIGN KEY (`chat_id`) REFERENCES `chats` (`id`);
 
 ALTER TABLE `messages` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+ALTER TABLE `stories` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `calls_users` ADD FOREIGN KEY (`call_id`) REFERENCES `calls` (`id`);
 
