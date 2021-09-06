@@ -36,7 +36,7 @@
  *            type:  string
  *          example: {
  *           "type": "Image || Video",
- *           "story": "base64 string",
+ *           "content": "base64 string",
  *           "caption": "this is the story caption if exists",
  *          }
  *    responses:

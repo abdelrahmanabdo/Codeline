@@ -11,9 +11,9 @@ module.exports = {
   init: function (server) {
     // start socket.io server and cache io value
     io = require('socket.io')(server, {
+      transports: ['websocket', 'polling'],
       pingTimeout: 40000,
       maxHttpBufferSize: 1e8,
-      path: '/server/socket'
     });
     return io;
   },
