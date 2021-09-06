@@ -17,7 +17,7 @@ module.exports = {
           c.name,
           m.message last_message,
           SUM(CASE WHEN m.seen = 0 THEN 1 ELSE 0 END) not_seen,
-          m.created_at
+          m.created_at,
           c.created_by
          FROM chats c
          JOIN chat_users cu
@@ -55,7 +55,7 @@ module.exports = {
           c.name,
           m.message last_message,
           SUM(CASE WHEN m.seen = 0 THEN 1 ELSE 0 END) not_seen,
-          m.created_at
+          m.created_at,
           c.created_by
          FROM chats c
          JOIN chat_users cu
