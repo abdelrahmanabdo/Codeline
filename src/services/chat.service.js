@@ -18,6 +18,7 @@ module.exports = {
           m.message last_message,
           SUM(CASE WHEN m.seen = 0 THEN 1 ELSE 0 END) not_seen,
           m.created_at
+          c.created_by
          FROM chats c
          JOIN chat_users cu
          ON c.id = cu.chat_id
@@ -26,8 +27,7 @@ module.exports = {
          WHERE cu.user_id = ${userId}
          AND cu.is_left = false
          GROUP BY cu.chat_id
-         ORDER BY m.created_at DESC
-         `,
+         ORDER BY m.created_at DESC`,
         async (error, chats) => {
           if (error) return reject(error);
           if (chats.length > 0) {
@@ -56,6 +56,7 @@ module.exports = {
           m.message last_message,
           SUM(CASE WHEN m.seen = 0 THEN 1 ELSE 0 END) not_seen,
           m.created_at
+          c.created_by
          FROM chats c
          JOIN chat_users cu
          ON c.id = cu.chat_id
@@ -164,7 +165,11 @@ module.exports = {
         // Create chat name
         const chatName = chat_name || await createChatName(to);
         // Create new chat 
-        const newChatId = await createNewChat(to.length > 2 ? 'Group' : 'Single', chatName);
+        const newChatId = await createNewChat(
+          to.length > 2 ? 'Group' : 'Single', 
+          chatName,
+          id
+        );
         // Add chat's users
         await addChatUsers(newChatId, to);
         // Insert the new message
@@ -312,11 +317,11 @@ const createChatName = async (users) => {
 }
 
 // Create new chat.
-const createNewChat = async (type, chatName) => {
+const createNewChat = async (type, chatName, adminId) => {
   return new Promise(async (resolve, reject) => {
     await db.query(
-      `INSERT INTO chats (type, name)
-        VALUES ('${type}', '${chatName}')`,
+      `INSERT INTO chats (type, name, created_by)
+        VALUES ('${type}', '${chatName}', ${adminId})`,
       async (error, results) => {
         if (error) reject(error);
         resolve(results.insertId);
