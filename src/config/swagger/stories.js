@@ -106,3 +106,35 @@
  *      '500':
  *         description: Internal Server error ( Contact The developer)
  */
+
+/**
+ * @swagger
+ *  /stories/{id}/delete/{storyId}:
+ *  delete:
+ *    summary: Delete user story
+ *    tags: ['Stories']
+ *    description: Delete user story
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The user's id
+ *     - in: path
+ *       name: storyId
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The story's id
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '422':
+ *         description: Missing params
+ *      '404':
+ *         description: The user is not found
+ *      '500':
+ *         description: Internal Server error ( Contact The developer)
+ */
+

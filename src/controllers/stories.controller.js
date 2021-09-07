@@ -70,5 +70,33 @@ module.exports = {
           message: err
         });;
       });
-  }
+  },
+
+  /**
+   * Deleted message from user's chat
+   * 
+   */
+  deleteUserStory: async (req, res) => {
+    const {
+      id,
+      storyId
+    } = req.params;
+
+    await storiesService
+      .deleteStory(id, storyId)
+      .then((isDelete) => {
+        return res.status(200).send({
+          success: isDelete ? true: false,
+          message: isDelete
+            ? 'Data is deleted successfully'
+            : 'Please check IDs'
+        });
+      })
+      .catch((error) => {
+        return res.status(500).send({
+          success: false,
+          message: error
+        });
+      });
+  },
 }

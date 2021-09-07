@@ -5,7 +5,8 @@ const {
 const {
   addNewStory,
   getUserStories,
-  getSingleContactStories
+  getSingleContactStories,
+  deleteUserStory
 } = require('../controllers/stories.controller');
 
 // Add new story
@@ -14,4 +15,7 @@ router.post('/:id', addNewStoryValidator, addNewStory);
 router.get('/:id', getUserStories); 
 // Get single user stories
 router.get('/:id/contact/:contactId', getSingleContactStories);
+// Delete story
+router.delete('/:id/delete/:storyId', deleteUserStory);
+
 module.exports = router;

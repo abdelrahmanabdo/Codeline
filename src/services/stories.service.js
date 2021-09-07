@@ -27,7 +27,25 @@ module.exports = {
          ORDER BY s.created_at`,
         async (error, stories) => {
           if (error) return reject(error);
-          return resolve(stories);
+          if (stories.length > 0) {
+            await db.query(`
+            SELECT 
+              u.id,
+              u.avatar,
+              count(u.id) as stories_num
+            FROM 
+              stories s JOIN users u 
+              ON u.id = s.user_id
+            WHERE
+              s.user_id = ${userId}
+              AND s.created_at > now() - interval 1 day
+            ORDER BY s.created_at`, (err, res) => {
+              if (res.length > 0) stories = [res[0], ...stories];
+              return resolve(stories)
+            });
+          } else {
+            return resolve(stories)
+          }
         }
       );
     });
@@ -86,6 +104,24 @@ module.exports = {
     await db.query(
         `INSERT INTO stories (user_id, type, story, caption)
         VALUES (${userId}, '${type}', '${story}', ${caption ? "'" + caption + "'" : null})`,
+        async (error, results) => {
+          if (error) return reject(error);
+          return resolve(results.affectedRows === 1 ? true : false);
+        }
+      );
+    });
+  },
+
+  /**
+   * Delete user story
+   * 
+   * @returns {Array}
+   * @public
+   */
+  deleteStory: (userId, storyId) => {
+    return new Promise(async (resolve, reject) => {
+      await db.query(
+        `DELETE FROM stories WHERE user_id = ${userId} AND id = ${storyId}`,
         async (error, results) => {
           if (error) return reject(error);
           return resolve(results.affectedRows === 1 ? true : false);
