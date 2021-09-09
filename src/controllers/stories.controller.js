@@ -57,7 +57,7 @@ module.exports = {
    */
   getSingleContactStories: async (req, res) => {
     await storiesService
-      .fetchContactStories(req.params.id, req.params.contactId)
+      .fetchContactStories(req.params.contactId)
       .then(async (data) => {
         res.send({
           success: true,

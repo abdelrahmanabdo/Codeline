@@ -50,17 +50,18 @@ module.exports = {
   /**
    * Fetch contact stories list
    */
-  fetchContactStories: function async (userId, contactId) {
+  fetchContactStories: function async (contactId) {
     return new Promise(async (resolve, reject) => {
       await db.query(
         `SELECT
           id,
+          user_id,
           type,
           story,
           caption,
           created_at
          FROM stories
-         WHERE user_id = ${userId}
+         WHERE user_id = ${contactId}
          AND created_at > now() - interval 1 day
          ORDER BY created_at`,
         async (error, stories) => {
