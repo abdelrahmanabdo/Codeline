@@ -27,25 +27,21 @@ module.exports = {
          ORDER BY s.created_at`,
         async (error, stories) => {
           if (error) return reject(error);
-          if (stories.length > 0) {
-            await db.query(`
-            SELECT 
-              u.id,
-              u.avatar,
-              count(u.id) as stories_num
-            FROM 
-              stories s JOIN users u 
-              ON u.id = s.user_id
-            WHERE
-              s.user_id = ${userId}
-              AND s.created_at > now() - interval 1 day
-            ORDER BY s.created_at`, (err, res) => {
-              if (res.length > 0) stories = [res[0], ...stories];
-              return resolve(stories)
-            });
-          } else {
+          await db.query(`
+          SELECT 
+            u.id,
+            u.avatar,
+            count(u.id) as stories_num
+          FROM 
+            stories s JOIN users u 
+            ON u.id = s.user_id
+          WHERE
+            s.user_id = ${userId}
+            AND s.created_at > now() - interval 1 day
+          ORDER BY s.created_at`, (err, res) => {
+            if (res.length > 0) stories = [res[0], ...stories];
             return resolve(stories)
-          }
+          });
         }
       );
     });
@@ -58,14 +54,14 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       await db.query(
         `SELECT
-          s.id,
-          s.story,
-          s.caption,
-          s.created_at
-         FROM stories s, contacts c
-         WHERE s.user_id = c.contact_id
-         AND c.user_id = ${userId}
-         AND s.user_id = ${contactId}
+          id,
+          type,
+          story,
+          caption,
+          created_at
+         FROM stories
+         WHERE user_id = ${userId}
+         AND created_at > now() - interval 1 day
          ORDER BY created_at`,
         async (error, stories) => {
           if (error) return reject(error);
@@ -83,12 +79,11 @@ module.exports = {
    */
   createNewStory: (userId, data) => {
     let {
-      type = 'Image',
+      type,
       content,
-      caption = null
+      caption
     } = data;
     return new Promise(async (resolve, reject) => {
-
     // In case uploaded story is image
     if (type === 'Image') {
       const storedImage = await upload(
@@ -96,14 +91,14 @@ module.exports = {
           uuid.v4(), 
           `stories/${userId}`
         );
-      story = storedImage || null;
+      content = storedImage || null;
     } else {
-      story = ''
+      content = ''
     }
 
     await db.query(
         `INSERT INTO stories (user_id, type, story, caption)
-        VALUES (${userId}, '${type}', '${story}', ${caption ? "'" + caption + "'" : null})`,
+        VALUES (${userId}, '${type}', '${content}', ${caption ? "'" + caption + "'" : null})`,
         async (error, results) => {
           if (error) return reject(error);
           return resolve(results.affectedRows === 1 ? true : false);
