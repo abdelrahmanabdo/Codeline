@@ -13,10 +13,11 @@ module.exports = {
     await profileService.fetchUserProfile(req.params.id)
       .then((result) => {
         const profile = {};
-        profile.information = result[0][0];
-        profile.gallery = result[1];
-        profile.projects = result[2];
-        profile.occasions = result[3];
+        profile.user = result[0][0];
+        profile.information = result[1][0] || null;
+        profile.gallery = result[2];
+        profile.projects = result[3];
+        profile.occasions = result[4];
 
         res.send({
           success: true,

@@ -13,6 +13,7 @@ module.exports = {
   fetchUserProfile: (id) => {
     return new Promise((resolve, reject) => {
       const queries = [
+        `SELECT id, phone,name, email, avatar, is_online FROM users WHERE id = ${id}`,
         `SELECT * FROM user_profile WHERE user_id = ${id}`,
         `SELECT * FROM user_gallery WHERE user_id = ${id}`,
         `SELECT * FROM user_occasions WHERE user_id = ${id}`,

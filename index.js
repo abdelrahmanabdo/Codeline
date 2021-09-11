@@ -63,6 +63,7 @@ app.use(
 
 // Socket
 io.on('connection', (socket) => {
+  console.log(`Connection : SocketId = ${socket.id}`)
   // Start a new chat channel 
   socket.on('start_chatting', (chatId) => socket.join(`chat:${chatId}`));
 
