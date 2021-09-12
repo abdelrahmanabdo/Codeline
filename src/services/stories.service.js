@@ -90,7 +90,7 @@ module.exports = {
       content,
       uuid.v4(),
       `stories/${userId}`,
-      type === 'Video' ? true : false
+      'video'
     );
     content = storedImage || null;
 

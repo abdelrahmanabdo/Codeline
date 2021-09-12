@@ -231,7 +231,17 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  upsertProfileInformation: (action = 'insert', id, data) => {
+  upsertProfileInformation: async (action = 'insert', id, data) => {
+    // In case user add CV
+    if (data.CV) {
+      data.CV = await upload(
+        data.CV,
+        uuid.v4(),
+        `profile/${id}`,
+        'file'
+      );
+    }
+    
     const query = action === 'insert'
       ? `INSERT INTO user_profile ( user_id, ${
          Object.keys(data).reduce((cur, acc, index) => cur + acc + ((index + 1 === Object.keys(data).length) ? '' : ',') , '')}) VALUES (${id},${

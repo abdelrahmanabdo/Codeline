@@ -137,15 +137,19 @@ module.exports = {
       } = data;
 
       if (
-        message_type === 'File' 
-        || message_type === 'Image' 
-        || message_type === 'Video'
+        message_type 
+        && (
+          message_type === 'Audio'
+          || message_type === 'File'
+          || message_type === 'Image' 
+          || message_type === 'Video'
+        )
       ) {
         const storedImage = await upload(
           message, 
           uuid.v4(), 
           `chats/${id}`,
-          message_type === 'Video' ? true : false
+          message_type.toLowerCase()
         );
         message = storedImage || null;
       }
