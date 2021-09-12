@@ -4,14 +4,14 @@ const mime = require('mime');
 const fs = require('fs');
 dotenv.config();
 
-module.exports = async function(data, fileName, folderName) {
-  var decodedImg = await decodeBase64Image(data);
+module.exports = async function(data, fileName, folderName, isVideo = false) {
+  var decodedImg = await decodeBase64(data, isVideo);
   var imageBuffer = decodedImg.data;
   var type = decodedImg.type;
   // var extension = mime.extension(type);
 
   try {
-    let path = `storage/images/${folderName}`;
+    let path = `storage/${isVideo? 'videos' : 'images'}/${folderName}`;
 
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path, { recursive: true }, err => {
@@ -20,7 +20,7 @@ module.exports = async function(data, fileName, folderName) {
     }
 
     path += `/${fileName}.${type}`;
-    fs.writeFile(path, imageBuffer, 'base64', () => {});
+    await fs.writeFile(path, imageBuffer, 'base64', () => {});
 
     return `${process.env.BASE_URL || 'https://app.codeline.social'}/${path}`;
   } catch (e) {
@@ -29,12 +29,13 @@ module.exports = async function(data, fileName, folderName) {
 }
 
 
-function decodeBase64Image(dataString) {
+function decodeBase64(dataString, isVideo = false) {
   var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
   response = {};
 
   if (matches && matches.length !== 3) return new Error('Invalid input string');
-  response.type = 'png';
+  response.type = isVideo ? 'mp4' : 'png';
+  dataString.replace(/ /g, '+');
   response.data = new Buffer.from(dataString, 'base64');
 
   return response;

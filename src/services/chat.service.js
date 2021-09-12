@@ -136,11 +136,16 @@ module.exports = {
         reply_to
       } = data;
 
-      if (message_type === 'File' || message_type === 'Image') {
+      if (
+        message_type === 'File' 
+        || message_type === 'Image' 
+        || message_type === 'Video'
+      ) {
         const storedImage = await upload(
           message, 
           uuid.v4(), 
-          `chats/${id}`
+          `chats/${id}`,
+          message_type === 'Video' ? true : false
         );
         message = storedImage || null;
       }

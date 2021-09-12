@@ -39,9 +39,9 @@ app.use(express.urlencoded({
   extended: true,
   limit: '50mb'
 }));
-app.use(express.static(__dirname + '/public', {
-  maxAge: 31557600
-}));
+// app.use(express.static(__dirname + '/public', {
+//   maxAge: 31557600
+// }));
 
 // Routes
 app.use('/api/v1', lookupsRoutes);

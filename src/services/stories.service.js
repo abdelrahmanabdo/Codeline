@@ -86,20 +86,17 @@ module.exports = {
     } = data;
     return new Promise(async (resolve, reject) => {
     // In case uploaded story is image
-    if (type === 'Image') {
-      const storedImage = await upload(
-          content,
-          uuid.v4(), 
-          `stories/${userId}`
-        );
-      content = storedImage || null;
-    } else {
-      content = ''
-    }
+    const storedImage = await upload(
+      content,
+      uuid.v4(),
+      `stories/${userId}`,
+      type === 'Video' ? true : false
+    );
+    content = storedImage || null;
 
     await db.query(
         `INSERT INTO stories (user_id, type, story, caption)
-        VALUES (${userId}, '${type}', '${content}', ${caption ? "'" + caption + "'" : null})`,
+         VALUES (${userId}, '${type}', '${content}', ${caption ? "'" + caption + "'" : null})`,
         async (error, results) => {
           if (error) return reject(error);
           return resolve(results.affectedRows === 1 ? true : false);

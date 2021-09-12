@@ -28,7 +28,7 @@ CREATE TABLE `user_profile` (
   `user_id` int,
   `nickname` varchar(255),
   `birth_date` varchar(255),
-  `martial_status_id` int,
+  `marital_status_id` int,
   `location_id` int,
   `CV` varchar(255),
   `bio` text,
@@ -199,7 +199,7 @@ ALTER TABLE `OTPs` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `user_profile` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
-ALTER TABLE `user_profile` ADD FOREIGN KEY (`martial_status_id`) REFERENCES `marital_statuses` (`id`);
+ALTER TABLE `user_profile` ADD FOREIGN KEY (`marital_status_id`) REFERENCES `marital_statuses` (`id`);
 
 ALTER TABLE `user_profile` ADD FOREIGN KEY (`location_id`) REFERENCES `cities` (`id`);
 

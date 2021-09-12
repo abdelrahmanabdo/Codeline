@@ -13,10 +13,43 @@ module.exports = {
   fetchUserProfile: (id) => {
     return new Promise((resolve, reject) => {
       const queries = [
-        `SELECT id, phone,name, email, avatar, is_online FROM users WHERE id = ${id}`,
-        `SELECT * FROM user_profile WHERE user_id = ${id}`,
+        `SELECT 
+          id, 
+          phone,
+          name, 
+          email, 
+          avatar, 
+          is_online 
+        FROM users
+        WHERE id = ${id}`,
+        `SELECT
+          p.id,
+          p.user_id,
+          p.nickname,
+          p.birth_date,
+          p.marital_status_id,
+          m.name_ar as marital_status,
+          p.location_id,
+          l.name_ar as location,
+          p.CV,
+          p.bio,
+          p.created_at
+          FROM user_profile p, marital_statuses m, cities l
+          WHERE m.id = p.marital_status_id
+          AND l.id = p.location_id
+          AND p.user_id = ${id}`,
         `SELECT * FROM user_gallery WHERE user_id = ${id}`,
-        `SELECT * FROM user_occasions WHERE user_id = ${id}`,
+        `SELECT 
+          o.id,
+          o.user_id,
+          o.occasion_id,
+          os.name_ar,
+          os.name_en,
+          o.date,
+          o.created_at
+          FROM user_occasions o, occasions os
+          WHERE o.user_id = ${id}
+          AND os.id = o.occasion_id`,
         `SELECT * FROM user_projects WHERE user_id = ${id}`,
       ];
       db.query(queries.join(';'), (error, results) => {
@@ -36,7 +69,25 @@ module.exports = {
   fetchProfileInformation: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM user_profile WHERE user_id = ${id} LIMIT 1`,
+        `SELECT 
+          p.id,
+          p.user_id,
+          u.avatar,
+          p.nickname,
+          p.birth_date,
+          p.marital_status_id,
+          m.name_ar as marital_status,
+          p.location_id,
+          l.name_ar as location,
+          p.CV,
+          p.bio,
+          p.created_at
+          FROM user_profile p, marital_statuses m, cities l, users u
+          WHERE m.id = p.marital_status_id
+          AND l.id = p.location_id
+          AND u.id = p.user_id
+          AND p.user_id = ${id}
+          LIMIT 1`,
         (error, results) => {
           if (error) return reject(error);
           resolve(results.length > 0 ? results[0] : null);
@@ -72,7 +123,17 @@ module.exports = {
   fetchProfileOccasions: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM user_occasions WHERE user_id = ${id}`,
+        `SELECT 
+          o.id,
+          o.user_id,
+          o.occasion_id,
+          os.name_ar,
+          os.name_en,
+          o.date,
+          o.created_at
+        FROM user_occasions o, occasions os
+        WHERE o.user_id = ${id}
+        AND os.id = o.occasion_id`,
         (error, results) => {
           if (error) return reject(error);
           resolve(results);
@@ -123,10 +184,21 @@ module.exports = {
    * @returns {Array}
    * @public
    */
-  fetchSingleOccasion: (user_id, occasionId) => {
+  fetchSingleOccasion: (userId, occasionId) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM user_occasions WHERE user_id = ${user_id} and id = ${occasionId}`,
+        `SELECT 
+          o.id,
+          o.user_id,
+          o.occasion_id,
+          os.name_ar,
+          os.name_en,
+          o.date,
+          o.created_at
+        FROM user_occasions o, occasions os
+        WHERE o.user_id = ${userId}
+        AND o.id = ${occasionId}
+        AND os.id = o.occasion_id`,
         (error, results) => {
           if (error) return reject(error);
           resolve(results.length > 0 ? results[0] : null);

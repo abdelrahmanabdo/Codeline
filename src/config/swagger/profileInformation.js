@@ -13,9 +13,9 @@
  *        birth_date:
  *          type: string
  *          description: The user's profile birth date
- *        martial_status_id:
+ *        marital_status_id:
  *          type: number
- *          description: The user's profile martial status id in martial statuses table 
+ *          description: The user's profile marital status id in marital statuses table 
  *        location_id:
  *          type: number
  *          description: The user's profile location id in locations table 
@@ -28,7 +28,7 @@
  *      example:
  *         nickname: Abdo
  *         birth_date: 15/7/1995 
- *         martial_status_id: 1
+ *         marital_status_id: 1
  *         location_id: 1
  *         CV: CV file base64 string
  *         bio: Hello
