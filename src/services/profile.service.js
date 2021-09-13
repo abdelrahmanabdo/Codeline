@@ -19,7 +19,8 @@ module.exports = {
           name, 
           email, 
           avatar, 
-          is_online 
+          is_online,
+          is_subscribed
         FROM users
         WHERE id = ${id}`,
         `SELECT

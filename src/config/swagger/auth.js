@@ -105,3 +105,28 @@
  *      '500':
  *         description: Internal Server error ( Contact The developer)
  */
+
+/**
+ * @swagger
+ *  /auth/{id}/logout:
+ *  post:
+ *    summary: Log user out
+ *    tags: ['Auth']
+ *    description: Log user in
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The user's id
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '422':
+ *         description: Missing params
+ *      '404':
+ *         description: The user is not found
+ *      '500':
+ *         description: Internal Server error ( Contact The developer)
+ */

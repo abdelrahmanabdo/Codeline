@@ -110,8 +110,9 @@ module.exports = {
           success: true,
           user: {
             ...user,
-            is_active: true,
+            is_active: user.is_active === 1 ? true : false,
             is_online: true,
+            is_subscribed: user.is_subscribed === 1 ? true : false
           },
           token
         })
@@ -123,6 +124,29 @@ module.exports = {
         });
       });
   },
+
+  /**
+   * Login user
+   * 
+   * @returns {Object}
+   * @public
+   */
+  logout: async (req, res) => {
+
+    await authService.logUserOut(req.params.id)
+      .then((isLoggedOut) => {
+        res.send({
+          success: isLoggedOut ? true : false
+        })
+      })
+      .catch((err) => {
+        return res.status(404).json({
+          success: false,
+          message: err
+        });
+      });
+  },
+
 
 }
 

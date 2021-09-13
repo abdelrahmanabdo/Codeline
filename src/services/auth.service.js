@@ -2,6 +2,7 @@ const db = require('../utils/db');
 const bcrypt = require('bcrypt');
 const upload = require('../helpers/upload');
 const uuid = require('uuid');
+const moment = require('moment');
 
 module.exports = {
 
@@ -74,6 +75,7 @@ module.exports = {
           is_online, 
           last_online, 
           is_active,
+          is_subscribed,
           created_at
           FROM users 
           WHERE phone LIKE '${phone}'`,
@@ -88,6 +90,28 @@ module.exports = {
             }
             else reject('Wrong User Password');
           }); 
+        }
+      );
+    });
+  },
+
+
+  /**
+   * Log user out
+   * 
+   * @returns {Array}
+   * @public
+   */
+  logUserOut: (userId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `UPDATE users
+          SET is_online = false,
+          last_online = '${moment().format('YYYY-MM-DD hh:mm:ss')}'
+         WHERE id = ${userId}`,
+        (error, results) => {
+          if (error) return reject(error)
+          return resolve(results.affectedRows === 0 ? false : true);
         }
       );
     });

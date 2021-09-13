@@ -7,7 +7,8 @@ const {
 const {
   createAccount,
   login,
-  verifyPhoneNumber
+  verifyPhoneNumber,
+  logout
 } = require('../controllers/auth.controller');
 
 // Create new account
@@ -16,5 +17,6 @@ router.post('/verify', phoneNumberVerification, verifyPhoneNumber);
 router.post('/create_account', createAccountValidator, createAccount); 
 // log user in
 router.post('/login', loginValidator, login);
-
+// log user out
+router.post('/:id/logout', logout);
 module.exports = router;
