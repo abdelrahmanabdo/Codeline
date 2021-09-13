@@ -93,6 +93,8 @@ module.exports = {
           m.user_id user_id,
           u.name user_name,
           u.avatar user_avatar,
+          u.is_online user_is_online,
+          u.last_online user_last_online,
           m.type,
           m.message,
           m.reply_to as reply_to_id,
@@ -205,7 +207,7 @@ module.exports = {
   fetchChatMembers: (chatId) => {
     return new Promise((resolve, reject) => {
        db.query(
-        `SELECT u.id, u.name, u.phone, u.avatar
+        `SELECT u.id, u.name, u.phone, u.avatar, u.is_online, u.last_online
          FROM users u
          JOIN chat_users cu
          ON u.id = cu.user_id
