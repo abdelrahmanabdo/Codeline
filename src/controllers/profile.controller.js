@@ -16,8 +16,8 @@ module.exports = {
         profile.user = result[0][0];
         profile.information = result[1][0] || null;
         profile.gallery = result[2];
-        profile.projects = result[3];
-        profile.occasions = result[4];
+        profile.occasions = result[3];
+        profile.projects = result[4];
 
         res.send({
           success: true,
