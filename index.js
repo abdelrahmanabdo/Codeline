@@ -18,6 +18,7 @@ const profileRoutes = require('./src/routes/profile.routes');
 const otpRoutes = require('./src/routes/otp.routes');
 const lookupsRoutes = require('./src/routes/lookups.routes');
 const chatRoutes = require('./src/routes/chat.routes');
+const callsRoutes = require('./src/routes/calls.routes');
 const contactsRoutes = require('./src/routes/contacts.routes');
 const storiesRoutes = require('./src/routes/stories.routes');
 const {
@@ -51,6 +52,7 @@ app.post('/api/v1/password/reset', resetPassword);
 app.use('/api/v1/users', authMiddleware, userRoutes);
 app.use('/api/v1/profile', [authMiddleware], profileRoutes);
 app.use('/api/v1/chats', [authMiddleware], chatRoutes);
+app.use('/api/v1/calls', [authMiddleware], callsRoutes);
 app.use('/api/v1/contacts', [authMiddleware], contactsRoutes);
 app.use('/api/v1/stories', [authMiddleware], storiesRoutes);
 
