@@ -74,6 +74,8 @@ module.exports = {
           p.id,
           p.user_id,
           u.avatar,
+          u.name,
+          u.email,
           p.nickname,
           p.birth_date,
           p.marital_status_id,

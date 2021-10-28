@@ -1,5 +1,7 @@
 const db = require('../utils/db');
 var bcrypt = require('bcrypt');
+const upload = require('../helpers/upload');
+const uuid = require('uuid');
 
 module.exports = {
 
@@ -93,7 +95,17 @@ module.exports = {
    * @returns {Object}
    * @public
    */
-  updateUser: (id, data) => {
+  updateUser: async (id, data) => {
+    // In case user add image
+    if (data.avatar) {
+      const storedImage = await upload(
+        data.avatar,
+        uuid.v4(),
+        `users`
+      );
+      data.avatar = storedImage;
+    }
+
     let updateQuery = '';
     // Filter data and allow only 3 updatable columns.
     Object.keys(data)

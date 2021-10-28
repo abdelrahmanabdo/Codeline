@@ -207,13 +207,26 @@ module.exports = {
    * @public
    */
   upsertProfileInformation: async (req, res, next) => {
-    if (Object.keys(req.body).length === 0 ) 
+    if (Object.keys(req.body).length === 0) 
       return res.status(400).send({success: false, message: 'No Data Sent'});
 
-    const data = JSON.parse(JSON.stringify(req.body));
+    const data = req.body;
 
     // Check if user already has a profile 
     const hasProfile = await profileService.checkUserHasProfile(req.params.id);
+
+    if (data.name || data.email || data.avatar) {
+      let user = {};
+      if (data.name) user['name'] = data.name;
+      if (data.email) user['email'] = data.email;
+      if (data.avatar) user['avatar'] = data.avatar;
+
+      await userService.updateUser(req.params.id, user);
+      delete data.name;
+      delete data.email;
+      delete data.avatar;
+    }
+
 
     // Upsert data
     await profileService

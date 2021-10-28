@@ -7,6 +7,15 @@
  *      required:
  *        - user_id
  *      properties:
+ *        name:
+ *          type: string
+ *          description: The user name
+ *        email:
+ *          type: string
+ *          description: The user email
+ *        avatar:
+ *          type: string
+ *          description: The user avatar
  *        nickname:
  *          type: string
  *          description: The user's profile nickname
@@ -26,6 +35,9 @@
  *          type: string
  *          description: The user's profile bio
  *      example:
+ *         name: Abdelrahman salman
+ *         email: abdo@codeline.social
+ *         avatar: base64
  *         nickname: Abdo
  *         birth_date: 15/7/1995 
  *         marital_status_id: 1
