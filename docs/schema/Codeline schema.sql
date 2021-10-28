@@ -129,7 +129,7 @@ CREATE TABLE `calls` (
   `deleted_at` timestamp
 );
 
-CREATE TABLE `calls_users` (
+CREATE TABLE `call_users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `call_id` int,
   `user_id` int,
@@ -229,6 +229,6 @@ ALTER TABLE `messages` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `stories` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
-ALTER TABLE `calls_users` ADD FOREIGN KEY (`call_id`) REFERENCES `calls` (`id`);
+ALTER TABLE `call_users` ADD FOREIGN KEY (`call_id`) REFERENCES `calls` (`id`);
 
-ALTER TABLE `calls_users` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+ALTER TABLE `call_users` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);

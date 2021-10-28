@@ -221,12 +221,13 @@ module.exports = {
       if (data.email) user['email'] = data.email;
       if (data.avatar) user['avatar'] = data.avatar;
 
+      // Update user data
       await userService.updateUser(req.params.id, user);
+
       delete data.name;
       delete data.email;
       delete data.avatar;
     }
-
 
     // Upsert data
     await profileService
