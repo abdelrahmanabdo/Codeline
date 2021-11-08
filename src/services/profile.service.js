@@ -108,7 +108,7 @@ module.exports = {
   fetchProfileGalleries: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM user_gallery WHERE user_id = ${id}`,
+        `SELECT * FROM user_gallery WHERE user_id = ${id} ORDER BY created_at DESC`,
         (error, results) => {
           if (error) return reject(error);
           resolve(results);
@@ -136,7 +136,8 @@ module.exports = {
           o.created_at
         FROM user_occasions o, occasions os
         WHERE o.user_id = ${id}
-        AND os.id = o.occasion_id`,
+        AND os.id = o.occasion_id
+        ORDER BY created_at DESC`,
         (error, results) => {
           if (error) return reject(error);
           resolve(results);
@@ -154,7 +155,7 @@ module.exports = {
   fetchProfileProjects: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM user_projects WHERE user_id = ${id}`,
+        `SELECT * FROM user_projects WHERE user_id = ${id} ORDER BY created_at DESC`,
         (error, results) => {
           if (error) return reject(error);
           resolve(results);
