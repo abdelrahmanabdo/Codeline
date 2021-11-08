@@ -283,8 +283,7 @@ module.exports = {
      return new Promise((resolve, reject) => {
        db.query(
          `UPDATE user_projects SET${
-         Object.keys(data).reduce((cur, acc, index) => `${cur} ${acc} = '${data[acc]}'` + ((index + 1 === Object.keys(data).length) ? '' : ',') , '')} 
-         WHERE id = ${projectId}`,
+         Object.keys(data).reduce((cur, acc, index) => `${cur} ${acc} = '${data[acc]}'` + ((index + 1 === Object.keys(data).length) ? '' : ',') , '')} WHERE id = ${projectId}`,
          (error, results) => {
            if (error) return reject(error)
            resolve(results.affectedRows);
@@ -303,8 +302,7 @@ module.exports = {
      return new Promise((resolve, reject) => {
        db.query(
          `UPDATE user_occasions SET${
-         Object.keys(data).reduce((cur, acc, index) => `${cur} ${acc} = '${data[acc]}'` + ((index + 1 === Object.keys(data).length) ? '' : ',') , '')} 
-         WHERE id = ${occasionId}`,
+         Object.keys(data).reduce((cur, acc, index) => `${cur} ${acc} = '${data[acc]}'` + ((index + 1 === Object.keys(data).length) ? '' : ',') , '')} WHERE id = ${occasionId}`,
          (error, results) => {
            if (error) return reject(error)
            resolve(results.affectedRows);
