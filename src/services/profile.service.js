@@ -264,6 +264,55 @@ module.exports = {
     });
   },
 
+   /**
+    * update exists profile gallery row
+    * @param {*} user_id 
+    * @returns 
+    */
+   updateProject: async (userId, data) => {
+     // In case user add image
+     if (data.image) {
+       const storedImage = await upload(
+         data.image,
+         uuid.v4(),
+         `galleries/${userId}`
+       );
+       data.image = storedImage;
+     }
+
+     return new Promise((resolve, reject) => {
+       db.query(
+         `UPDATE user_projects SET${
+         Object.keys(data).reduce((cur, acc, index) => `${cur} ${acc} = '${data[acc]}'` + ((index + 1 === Object.keys(data).length) ? '' : ',') , '')} 
+         WHERE id = ${projectId}`,
+         (error, results) => {
+           if (error) return reject(error)
+           resolve(results.affectedRows);
+         }
+       );
+     });
+   },
+
+
+   /**
+    * update exists profile occasion row
+    * @param {*} user_id 
+    * @returns 
+    */
+   updateOccasion: async (occasionId, data) => {
+     return new Promise((resolve, reject) => {
+       db.query(
+         `UPDATE user_occasions SET${
+         Object.keys(data).reduce((cur, acc, index) => `${cur} ${acc} = '${data[acc]}'` + ((index + 1 === Object.keys(data).length) ? '' : ',') , '')} 
+         WHERE id = ${occasionId}`,
+         (error, results) => {
+           if (error) return reject(error)
+           resolve(results.affectedRows);
+         }
+       );
+     });
+   },
+ 
 
   /**
    * Insert new profile gallery row

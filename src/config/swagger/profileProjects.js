@@ -75,7 +75,34 @@
  *         description: Internal Server error ( Contact The developer)
  */
 
-
+/**
+ * @swagger
+ *  /profile/{id}/projects/:projectId:
+ *  put:
+ *    summary: Update profile project.
+ *    tags: ['Profile Projects']
+ *    description: Update user's profile project.
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The user's id
+ *    requestBody:
+ *     required: true
+ *     content:
+ *      application/json:
+ *        schema:
+ *          $ref: '#/components/schemas/Profile Projects'
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '422':
+ *         description: Missing params
+ *      '500':
+ *         description: Internal Server error ( Contact The developer)
+ */
 
 /**
  * @swagger

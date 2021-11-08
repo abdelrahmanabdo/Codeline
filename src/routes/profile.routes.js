@@ -14,6 +14,8 @@ const {
   getSingleOccasion,
   getSingleProject,
   upsertProfileInformation,
+  updateOccasion,
+  updateProject,
   insertProfileGallery,
   insertProfileOccasion,
   insertProfileProject,
@@ -40,6 +42,8 @@ router.post('/:id/occasions', createProfileOccasionValidator ,insertProfileOccas
 router.post('/:id/projects', createProfileProjectValidator, insertProfileProject); // insert user's profile projects
 
 router.put('/:id/information', upsertProfileInformation); // update user's profile information
+router.put('/:id/occasions/:occasionId', updateOccasion); // update user's profile occasion
+router.put('/:id/projects/:projectId', updateProject); // update user's profile project
 
 router.delete('/:id/gallery/:galleryId', deleteProfileGallery); // delete user's profile gallery
 router.delete('/:id/occasions/:occasionId', deleteProfileOccasion); // delete user's profile occasions

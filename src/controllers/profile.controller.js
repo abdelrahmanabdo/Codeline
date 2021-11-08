@@ -253,6 +253,53 @@ module.exports = {
   },
 
   /**
+   * update profile project.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  updateProject: async (req, res, next) => {
+    await profileService
+      .updateProject(req.params.projectId, req.body)
+      .then(() => {
+        return res.status(200).send({
+          success: true,
+          message: `Project is updated successfully!`
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          success: false,
+          message: err.sqlMessage
+        });
+      });
+  },
+
+  /**
+   * update profile occasion.
+   * 
+   * @returns {Object}
+   * @public
+   */
+  updateOccasion: async (req, res, next) => {
+    await profileService
+      .updateOccasion(req.params.occasionId, req.body)
+      .then(() => {
+        return res.status(200).send({
+          success: true,
+          message: `Occasion is updated successfully!`
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          success: false,
+          message: err.sqlMessage
+        });
+      });
+  },
+
+
+  /**
    * Insert profile gallery.
    * 
    * @returns {Object}

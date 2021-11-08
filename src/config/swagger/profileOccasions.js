@@ -72,6 +72,34 @@
  *         description: Internal Server error ( Contact The developer)
  */
 
+/**
+ * @swagger
+ *  /profile/{id}/occasions/:occasionId:
+ *  put:
+ *    summary: update profile occasion.
+ *    tags: ['Profile Occasions']
+ *    description: update user's profile occasion.
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: number
+ *       required: true
+ *       description: The user's id
+ *    requestBody:
+ *     required: true
+ *     content:
+ *      application/json:
+ *        schema:
+ *          $ref: '#/components/schemas/Profile Occasions'
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '422':
+ *         description: Missing params
+ *      '500':
+ *         description: Internal Server error ( Contact The developer)
+ */
 
 /**
  * @swagger
