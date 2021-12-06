@@ -269,22 +269,22 @@ module.exports = {
     * @param {*} user_id 
     * @returns 
     */
-   updateProject: async (userId, data) => {
+   updateProject: async (projectId, data) => {
      // In case user add image
      if (data.image) {
        const storedImage = await upload(
          data.image,
          uuid.v4(),
-         `galleries/${userId}`
+         `galleries/${projectId}`
        );
        data.image = storedImage;
      }
-
+     const fields = Object.keys(data).reduce((cur, acc, index) => `${cur} ${acc} = '${data[acc]}'` + ((index + 1 === Object.keys(data).length) ? '' : ','), '');
      return new Promise((resolve, reject) => {
        db.query(
-         `UPDATE user_projects SET${
-         Object.keys(data).reduce((cur, acc, index) => `${cur} ${acc} = '${data[acc]}'` + ((index + 1 === Object.keys(data).length) ? '' : ',') , '')} WHERE id = ${projectId}`,
+         `UPDATE user_projects SET ${fields} WHERE id = ${projectId}`,
          (error, results) => {
+           console.log({error})
            if (error) return reject(error)
            resolve(results.affectedRows);
          }
@@ -300,9 +300,9 @@ module.exports = {
     */
    updateOccasion: async (occasionId, data) => {
      return new Promise((resolve, reject) => {
+       const fields = Object.keys(data).reduce((cur, acc, index) => `${cur} ${acc} = '${data[acc]}'` + ((index + 1 === Object.keys(data).length) ? '' : ','), '');
        db.query(
-         `UPDATE user_occasions SET${
-         Object.keys(data).reduce((cur, acc, index) => `${cur} ${acc} = '${data[acc]}'` + ((index + 1 === Object.keys(data).length) ? '' : ',') , '')} WHERE id = ${occasionId}`,
+         `UPDATE user_occasions SET${fields} WHERE id = ${occasionId}`,
          (error, results) => {
            if (error) return reject(error)
            resolve(results.affectedRows);

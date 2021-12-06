@@ -77,7 +77,7 @@
 
 /**
  * @swagger
- *  /profile/{id}/projects/:projectId:
+ *  /profile/{id}/projects/{projectId}:
  *  put:
  *    summary: Update profile project.
  *    tags: ['Profile Projects']

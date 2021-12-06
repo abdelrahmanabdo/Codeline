@@ -19,14 +19,14 @@ module.exports = {
     }
 
     let {contacts} = req.body;
-    if (contacts && contacts.length > 0) {
+    if (contacts && !!contacts.length) {
       await contactsService
         .addNewContacts(req.params.id, contacts)
         .then(async (status) => {
           let addedContacts = [];
-          if (status)
+          if (status) {
             addedContacts = await contactsService.fetchUserContacts(req.params.id);
-
+          }
           return res.status(200).send({
             success: true,
             message: 'Contacts are added successfully',

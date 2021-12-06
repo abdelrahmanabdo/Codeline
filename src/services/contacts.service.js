@@ -35,21 +35,21 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         for (var i = 0; i < contacts.length; i++) {
-          let currentContact = typeof contacts[i] === 'object'
-            ? contacts[i]
-            : JSON.parse(JSON.stringify(contacts[i]));
-
-            // Check if this user has an account in our platform or not.
+          if (typeof contacts[i] !== 'object') return reject('Wrong contacts format');
+          let currentContact =  contacts[i];
+          // Check if this user has an account in our platform or not.
           const contact = await userService.fetchUserByPhone(currentContact.phone);
           if (contact) {
             // Check if the contact already in the list of this user.
             const isContact = await isAlreadyContact(userId, contact.id);
             // Insert contact record.
-            if (!isContact) await addContact(
-                                    userId, 
-                                    contact.id, 
-                                    currentContact.name || currentContact.phone
-                                  );
+            if (!isContact) {
+              await addContact(
+                 userId, 
+                 contact.id, 
+                 currentContact.name || currentContact.phone
+              );
+            }
           }
         }
         return resolve(true);

@@ -74,7 +74,7 @@
 
 /**
  * @swagger
- *  /profile/{id}/occasions/:occasionId:
+ *  /profile/{id}/occasions/{occasionId}:
  *  put:
  *    summary: update profile occasion.
  *    tags: ['Profile Occasions']

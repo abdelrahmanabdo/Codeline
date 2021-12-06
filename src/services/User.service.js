@@ -82,7 +82,7 @@ module.exports = {
         [phone],
         (error, results) => {
           if (error) return reject(error);
-          resolve(results.length > 0 ? results[0] : null);
+          resolve(!!results.length ? results[0] : null);
         }
       );
     });
