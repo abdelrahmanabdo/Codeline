@@ -24,6 +24,14 @@ module.exports = {
       });
     }
 
+    const user = await userService.fetchUserByPhone(req.body.phone);
+    if (user) {
+      return res.status(400).send({
+        success: false,
+        message: 'Phone number is already exists!'
+      });
+    }
+
     const otp = await otpController
       .createNonRegisteredUserOTP(req.body.phone);
 
