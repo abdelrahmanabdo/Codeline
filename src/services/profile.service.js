@@ -284,7 +284,6 @@ module.exports = {
        db.query(
          `UPDATE user_projects SET ${fields} WHERE id = ${projectId}`,
          (error, results) => {
-           console.log({error})
            if (error) return reject(error)
            resolve(results.affectedRows);
          }
@@ -378,8 +377,8 @@ module.exports = {
     return new Promise((resolve, reject) => {
       // Insert new user record.
       db.query(
-        `INSERT INTO user_projects (user_id, title, description, image) VALUES (${
-          userId}, '${data.title}', '${data.description}', '${data.image}')`,
+        `INSERT INTO user_projects (user_id, title, description, image, email, phone) VALUES (${
+          userId}, '${data.title}', '${data.description}', '${data.image}', ${data.email ? `'${data.email}'` : null}, ${data.phone ? `'${data.phone}'` : null})`,
         (error, results) => {
           if (error) return reject(error)
           resolve(results.insertId);

@@ -19,6 +19,8 @@
  *         title: Project title
  *         description: Project description is here......
  *         image: "base64"
+ *         email: "owner@gmail.com"
+ *         phone: "+201********"
  */
 
 /**
