@@ -87,7 +87,7 @@ CREATE TABLE `contacts` (
   `contact_name` varchar(255),
   `is_blocked` boolean Default false,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `chats` (

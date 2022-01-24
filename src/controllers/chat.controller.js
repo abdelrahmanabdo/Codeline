@@ -130,6 +130,7 @@ module.exports = {
 
         return res.status(200).send({
           success: true,
+          chat_id: data.chat_id,
           message: data.isAdded
             ? 'Message Sent successfully' 
             : 'Wrong Chat Id'

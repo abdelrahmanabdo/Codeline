@@ -36,7 +36,7 @@ module.exports = {
       try {
         for (var i = 0; i < contacts.length; i++) {
           if (typeof contacts[i] !== 'object') return reject('Wrong contacts format');
-          let currentContact =  contacts[i];
+          let currentContact = contacts[i];
           // Check if this user has an account in our platform or not.
           const contact = await userService.fetchUserByPhone(currentContact.phone);
           if (contact) {
@@ -45,8 +45,8 @@ module.exports = {
             // Insert contact record.
             if (!isContact) {
               await addContact(
-                 userId, 
-                 contact.id, 
+                 userId,
+                 contact.id,
                  currentContact.name || currentContact.phone
               );
             }
