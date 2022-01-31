@@ -11,14 +11,14 @@ var db_config = {
 };
 
 // Create a connection to the database
-let connection = mysql.createConnection(db_config);
+let connection = mysql.createPool(db_config);
 
 //- Establish a new connection
-connection.connect(function (err) {
+connection.getConnection(function (err) {
   if (err) {
     // mysqlErrorHandling(connection, err);
     console.log("\n\t *** Cannot establish a connection with the database. ***");
-
+    console.log('err', err);
     connection = reconnect(connection);
   } else {
     console.log("\n\t *** New connection established with the database. ***")
@@ -29,12 +29,12 @@ connection.connect(function (err) {
 function reconnect(connection) {
   console.log("\n New connection tentative...");
   //- Destroy the current connection variable
-  if (connection) connection.destroy();
+  // if (connection) connection.destroy();
   //- Create a new one
-  var connection = mysql.createConnection(db_config);
+  var connection = mysql.createPool(db_config);
 
   //- Try to reconnect
-  connection.connect(function (err) {
+  connection.getConnection(function (err) {
     if (err) {
       //- Try to connect every 2 seconds.
       setTimeout(reconnect, 2000);
