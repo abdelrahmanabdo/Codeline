@@ -1,6 +1,6 @@
 module.exports = {
-  db_host: process.env.DB_HOST || 'localhost',
-  db_user: process.env.DB_USER || 'root',
-  db_password: process.env.DB_PASSWORD || 'root_user',
-  db_database: process.env.DB_DATABASE || 'codeline'
+  db_host: '45.79.48.52',
+  db_user: 'codeline_admin_user',
+  db_password: '@#$Codeline123@#$',
+  db_database: 'codeline_database'
 }

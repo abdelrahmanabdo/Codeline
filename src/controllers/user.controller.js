@@ -174,7 +174,7 @@ module.exports = {
       return res.status(404).send({
         success: false,
         message: 'No User Found!'
-      })
+      });
     }
 
     userService
@@ -202,4 +202,4 @@ module.exports = {
         });
       });
   }
-}
+};

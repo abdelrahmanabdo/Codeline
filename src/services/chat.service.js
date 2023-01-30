@@ -73,7 +73,7 @@ module.exports = {
             for (var i = 0; i < chats.length; i++) {
               const users = await this.fetchChatMembers(chats[i].id);
               chats[i]['users'] = users;
-            };
+            }
           }
           return resolve(chats);
         }
@@ -207,7 +207,7 @@ module.exports = {
   fetchChatMembers: (chatId) => {
     return new Promise((resolve, reject) => {
        db.query(
-        `SELECT u.id, u.name, u.phone, u.avatar, u.is_online, u.last_online
+        `SELECT u.id, u.name, u.phone, u.avatar, u.qb_id, u.is_online, u.last_online
          FROM users u
          JOIN chat_users cu
          ON u.id = cu.user_id

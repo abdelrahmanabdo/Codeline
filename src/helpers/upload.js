@@ -29,7 +29,7 @@ module.exports = async function(data, fileName, folderName, fileType = 'image') 
   } catch (e) {
     console.log(e)
   }
-}
+};
 
 
 function decodeBase64(dataString, fileType) {

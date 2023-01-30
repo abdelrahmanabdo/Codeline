@@ -7,6 +7,8 @@ CREATE TABLE `users` (
   `password` varchar(150),
   `pin_code` int(4) DEFAULT 0000,
   `avatar` varchar(255),
+  `device_id` text,
+  `qb_id` text,
   `is_online` boolean DEFAULT true,
   `last_online` timestamp DEFAULT CURRENT_TIMESTAMP,
   `is_active` boolean DEFAULT true,
